@@ -1,0 +1,84 @@
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-mist text-ink antialiased;
+    background-image:
+      radial-gradient(circle at top left, rgba(47, 128, 104, 0.08), transparent 34rem),
+      radial-gradient(circle at bottom right, rgba(35, 103, 122, 0.08), transparent 30rem);
+  }
+
+  ::selection {
+    @apply bg-fern text-white;
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8;
+  }
+
+  .eyebrow {
+    @apply text-xs font-extrabold uppercase tracking-[0.16em] text-fern;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-forest px-6 py-3 text-sm font-extrabold uppercase tracking-wide text-white shadow-sm transition hover:bg-ink focus:outline-none focus:ring-2 focus:ring-fern focus:ring-offset-2;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-white/70 bg-white/10 px-6 py-3 text-sm font-extrabold uppercase tracking-wide text-white backdrop-blur transition hover:bg-white hover:text-forest focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-forest;
+  }
+
+  .btn-light {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-forest/20 bg-white px-5 py-3 text-sm font-bold text-forest shadow-sm transition hover:border-forest hover:bg-sage focus:outline-none focus:ring-2 focus:ring-fern focus:ring-offset-2;
+  }
+
+  .section-title {
+    @apply font-display text-3xl font-bold text-ink sm:text-4xl;
+  }
+
+  .card {
+    @apply rounded-lg border border-forest/10 bg-white shadow-soft;
+  }
+
+  .premium-panel {
+    @apply rounded-lg border border-white/50 bg-white/90 shadow-editorial backdrop-blur-xl;
+  }
+
+  .kiwi-pattern {
+    background-image:
+      radial-gradient(ellipse at 10% 20%, rgba(215, 168, 79, 0.22), transparent 18rem),
+      radial-gradient(ellipse at 92% 15%, rgba(35, 103, 122, 0.2), transparent 20rem),
+      repeating-linear-gradient(135deg, rgba(255,255,255,0.1) 0 1px, transparent 1px 18px);
+  }
+
+  .fern-mark {
+    position: relative;
+  }
+
+  .fern-mark::before {
+    content: "";
+    position: absolute;
+    inset: -16px auto auto -22px;
+    width: 72px;
+    height: 120px;
+    opacity: 0.18;
+    transform: rotate(-28deg);
+    background:
+      radial-gradient(ellipse at 50% 0%, currentColor 0 10%, transparent 11%),
+      linear-gradient(currentColor, currentColor);
+    background-size: 100% 16px, 3px 100%;
+    background-repeat: repeat-y, no-repeat;
+    background-position: center, center;
+    border-radius: 999px;
+  }
+}

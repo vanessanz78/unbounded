@@ -1,0 +1,23 @@
+{
+  "name": "The Unbordered Family",
+  "short_name": "Unbordered",
+  "description": "A New Zealand based family exploring freedom, worldschooling, conscious living, and global lifestyle design.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0e2f2a",
+  "theme_color": "#0e2f2a",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
