@@ -27,7 +27,7 @@ const paths = [
   },
   {
     title: "Read by Theme",
-    text: "Filter posts by travel, money, spirituality, home, or building in public.",
+    text: "Browse by pillar, then find the guides, downloads, books, and related notes inside each topic.",
     href: "#/blogs",
     icon: BookOpen,
     image: "/read-by-theme.png"
@@ -51,9 +51,9 @@ const paths = [
 const armImages = {
   "freedom-wealth": "/freedom-and-wealth.png",
   "family-travel": "/family-and-travel.png",
-  "spiritual-conscious": "/spiritual-conscious-overview.png",
-  "home-lifestyle": "/nz-roots-guide.png",
-  "building-public": "/ai-tools-guide.png"
+  "spiritual-conscious": "/conscious-and-spiritual.png",
+  "home-lifestyle": "/our-home.jpg",
+  "building-public": "/building-in-public.png"
 };
 
 export default function StartHere() {

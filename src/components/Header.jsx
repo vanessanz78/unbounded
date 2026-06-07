@@ -1,14 +1,14 @@
-import { Instagram, Menu, PlaySquare, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import Logo from "./Logo.jsx";
 
 const navItems = [
-  { label: "Home", href: "#/" },
   { label: "Our Story", href: "#/our-story" },
-  { label: "Journey", href: "#/journey" },
-  { label: "Start Here", href: "#/start-here" },
-  { label: "Blog", href: "#/blogs" },
-  { label: "Contact", href: "#/contact" }
+  { label: "Freedom & Wealth", href: "#/freedom-wealth" },
+  { label: "Family & Travel", href: "#/family-travel" },
+  { label: "Conscious Living", href: "#/spiritual-conscious" },
+  { label: "Home & Living", href: "#/home-lifestyle" },
+  { label: "AI Tools", href: "#/using-ai-tools" }
 ];
 
 export default function Header() {
@@ -16,40 +16,21 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-manuka/20 bg-ink/95 text-sand backdrop-blur-xl">
-      <div className="container-page flex min-h-24 items-center justify-between gap-5 py-3">
+      <div className="container-page flex min-h-24 items-center gap-5 py-3">
         <Logo variant="dark" />
-        <nav className="hidden items-center gap-8 lg:flex">
+        <nav className="hidden flex-1 items-center justify-center gap-5 xl:gap-8 lg:flex">
           {navItems.map((item) => (
             <a
               key={item.href}
               href={item.href}
-              className="text-[0.72rem] font-extrabold uppercase tracking-[0.22em] text-sand transition hover:text-manuka"
+              className="text-center text-[0.66rem] font-extrabold uppercase tracking-[0.16em] text-sand transition hover:text-manuka xl:text-[0.7rem]"
             >
               {item.label}
             </a>
           ))}
         </nav>
-        <div className="hidden items-center gap-3 lg:flex">
-          <a
-            className="grid h-11 w-11 place-items-center rounded-full border border-manuka/45 text-manuka transition hover:bg-manuka hover:text-ink"
-            href="https://www.instagram.com/"
-            aria-label="Instagram"
-          >
-            <Instagram size={18} />
-          </a>
-          <a
-            className="grid h-11 w-11 place-items-center rounded-full border border-manuka/45 text-manuka transition hover:bg-manuka hover:text-ink"
-            href="https://www.youtube.com/"
-            aria-label="YouTube"
-          >
-            <PlaySquare size={18} />
-          </a>
-          <a className="btn-primary bg-manuka text-ink hover:bg-sand" href="#/journey">
-            Follow Our Journey
-          </a>
-        </div>
         <button
-          className="grid h-11 w-11 place-items-center rounded-md border border-manuka/35 text-manuka lg:hidden"
+          className="ml-auto grid h-11 w-11 place-items-center rounded-md border border-manuka/35 text-manuka lg:hidden"
           type="button"
           onClick={() => setOpen((value) => !value)}
           aria-label="Toggle navigation"
@@ -70,9 +51,6 @@ export default function Header() {
                 {item.label}
               </a>
             ))}
-            <a className="btn-primary mt-2 bg-manuka text-ink hover:bg-sand" href="#/journey" onClick={() => setOpen(false)}>
-              Follow Our Journey
-            </a>
           </nav>
         </div>
       )}

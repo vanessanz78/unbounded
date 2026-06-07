@@ -6,24 +6,27 @@ import BuildingPublic from "./pages/BuildingPublic.jsx";
 import Contact from "./pages/Contact.jsx";
 import FamilyTravel from "./pages/FamilyTravel.jsx";
 import FreedomWealth from "./pages/FreedomWealth.jsx";
+import GuidesLibrary from "./pages/GuidesLibrary.jsx";
 import Home from "./pages/Home.jsx";
 import HomeLifestyle from "./pages/HomeLifestyle.jsx";
 import Journey from "./pages/Journey.jsx";
 import OurStory from "./pages/OurStory.jsx";
+import RecommendedReading from "./pages/RecommendedReading.jsx";
 import SpiritualConscious from "./pages/SpiritualConscious.jsx";
-import StartHere from "./pages/StartHere.jsx";
 
 const routes = {
   "/": Home,
   "/our-story": OurStory,
   "/journey": Journey,
   "/blogs": Blogs,
-  "/start-here": StartHere,
   "/contact": Contact,
   "/family-travel": FamilyTravel,
   "/freedom-wealth": FreedomWealth,
   "/home-lifestyle": HomeLifestyle,
   "/building-public": BuildingPublic,
+  "/using-ai-tools": BuildingPublic,
+  "/guides-library": GuidesLibrary,
+  "/recommended-reading": RecommendedReading,
   "/spiritual-conscious": SpiritualConscious,
   "/spiritual-conscious/mindset": SpiritualConscious,
   "/spiritual-conscious/qhht": SpiritualConscious,

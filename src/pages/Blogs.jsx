@@ -20,11 +20,23 @@ const DELETED_STORAGE_KEY = "unbordered-family-deleted-posts";
 const ADMIN_PASSWORD = "Admin123";
 
 const tagLinks = {
-  "AI tools": "#/building-public",
-  "Building in Public": "#/building-public",
+  "AI tools": "#/using-ai-tools?section=ai-tools",
+  "Using AI Tools": "#/using-ai-tools?section=why-ai",
   "Conscious Living": "#/spiritual-conscious",
-  "NZ Roots": "#/home-lifestyle",
-  Freedom: "#/freedom-wealth"
+  "Digital Creativity": "#/blogs",
+  Entrepreneurship: "#/using-ai-tools?section=idea-now-what",
+  "Family & Travel": "#/family-travel",
+  "NZ Roots": "#/home-lifestyle?section=connection-to-roots",
+  "Home & Living": "#/home-lifestyle",
+  "Sovereign lifestyle": "#/home-lifestyle?section=sovereign-lifestyle",
+  "Nature & outdoors": "#/home-lifestyle?section=nature-outdoor-adventures",
+  "Connection to roots": "#/home-lifestyle?section=connection-to-roots",
+  "Income property": "#/home-lifestyle?section=income-generating-property",
+  "Food security": "#/home-lifestyle?section=food-security-self-sufficiency",
+  "Online income": "#/freedom-wealth?section=online-income",
+  Trading: "#/freedom-wealth?section=online-trading",
+  Freedom: "#/freedom-wealth",
+  Worldschooling: "#/family-travel?section=worldschooling"
 };
 
 function getStoredPosts() {
@@ -179,24 +191,20 @@ export default function Blogs() {
   return (
     <main className="bg-mist">
       <section className="relative overflow-hidden bg-ink text-white">
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-72"
-          style={{ backgroundImage: `url('${activePost?.imageUrl || "/ai-and-what-this-means-blog.png"}')` }}
-          aria-hidden="true"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-mist via-mist/80 to-ink/40" />
+        <div className="absolute inset-0 bg-gradient-to-br from-ink via-forest to-pounamu" aria-hidden="true" />
+        <div className="absolute inset-0 bg-gradient-to-r from-ink/95 via-forest/88 to-pounamu/76" aria-hidden="true" />
         <div className="container-page relative grid min-h-[540px] items-center py-16 lg:grid-cols-[0.58fr_0.42fr]">
           <div className="max-w-3xl">
             <span className="rounded-md bg-manuka px-4 py-2 text-xs font-extrabold uppercase tracking-[0.18em] text-ink">
               New Post
             </span>
-            <h1 className="mt-6 font-display text-5xl font-bold leading-tight text-ink sm:text-7xl">
+            <h1 className="mt-6 font-display text-5xl font-bold leading-tight text-sand sm:text-7xl">
               {activePost?.title}
             </h1>
             <p className="mt-3 text-sm font-extrabold uppercase tracking-[0.18em] text-manuka">
               {activePost?.subtitle}
             </p>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-ink/76">{activePost?.excerpt}</p>
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-sand/90">{activePost?.excerpt}</p>
             <div className="mt-8 flex flex-wrap gap-3">
               <button type="button" onClick={handleListen} className="btn-primary">
                 {isSpeaking ? <Pause size={17} /> : <Play size={17} />}
@@ -209,7 +217,7 @@ export default function Blogs() {
             </div>
           </div>
 
-          <aside className="mt-10 rounded-lg border border-manuka/25 bg-forest/88 p-6 text-sand shadow-editorial backdrop-blur lg:mt-0">
+          <aside className="mt-10 rounded-lg border border-manuka/35 bg-ink/72 p-6 text-sand shadow-editorial backdrop-blur lg:mt-0">
             <p className="eyebrow text-manuka">A different way to begin</p>
             <div className="mt-5 space-y-5">
               {[
@@ -219,7 +227,7 @@ export default function Blogs() {
               ].map(([title, text]) => (
                 <div key={title} className="border-b border-manuka/25 pb-5 last:border-b-0 last:pb-0">
                   <p className="text-sm font-extrabold uppercase tracking-[0.14em] text-manuka">{title}</p>
-                  <p className="mt-2 text-sm leading-6 text-sand/82">{text}</p>
+                  <p className="mt-2 text-sm leading-6 text-sand/90">{text}</p>
                 </div>
               ))}
             </div>
@@ -411,7 +419,7 @@ function createEmptyAdminForm() {
     excerpt: "",
     arm: "building-public",
     location: "Online",
-    tags: "AI tools, Building in Public",
+    tags: "AI tools, Using AI Tools",
     body: "",
     takeaways: "",
     reading: ""

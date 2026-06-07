@@ -10,7 +10,8 @@ import {
   Landmark,
   Leaf,
   Plane,
-  Sparkles
+  Sparkles,
+  TrendingUp
 } from "lucide-react";
 
 export const contentArms = [
@@ -18,16 +19,16 @@ export const contentArms = [
     id: "freedom-wealth",
     title: "Freedom & Wealth",
     shortTitle: "Wealth",
-    tagline: "Trading, online income, Bitcoin, and practical AI tools.",
+    tagline: "Trading, online income, partnerships, investing, and Bitcoin sovereignty.",
     summary:
       "Building resilient income and sovereign money habits so our lifestyle is backed by real options.",
     color: "forest",
     icon: Coins,
-    topics: ["Trading", "Online income", "Affiliates", "Stocks", "Bitcoin"],
+    topics: ["Online Trading", "Social Media & Online Income", "Affiliates & Partnerships", "Stocks & Investing", "Bitcoin & Sovereignty"],
     features: [
+      { title: "Online trading", icon: TrendingUp },
       { title: "Self-directed income", icon: BriefcaseBusiness },
-      { title: "Bitcoin literacy", icon: Landmark },
-      { title: "Useful AI systems", icon: Bot }
+      { title: "Bitcoin literacy", icon: Landmark }
     ]
   },
   {
@@ -39,7 +40,7 @@ export const contentArms = [
       "Slow travel with children, choosing bases intentionally, and learning from people and places.",
     color: "fern",
     icon: Plane,
-    topics: ["Worldschooling", "Relocation", "Global lifestyle"],
+    topics: ["Why Travel?", "Travel Smarter", "Worldschooling", "Relocation", "Global Lifestyle Design"],
     features: [
       { title: "Worldschooling", icon: Compass },
       { title: "Family rhythms", icon: HeartHandshake },
@@ -48,50 +49,52 @@ export const contentArms = [
   },
   {
     id: "spiritual-conscious",
-    title: "Spiritual & Conscious Living",
+    title: "Conscious Living",
     shortTitle: "Conscious",
-    tagline: "Mindset, QHHT, sovereignty, and inner expansion.",
+    tagline: "Connection, awareness, healing, sovereignty, and purpose.",
     summary:
-      "The inner work beneath freedom: intuition, healing, energetic sovereignty, and conscious parenting.",
+      "The inner work beneath freedom: connection, awareness, healing, sovereignty, and purpose.",
     color: "clay",
     icon: Sparkles,
-    topics: ["Mindset", "QHHT", "Sovereignty"],
+    topics: ["Connection", "Awareness", "Healing", "Sovereignty", "Purpose"],
     features: [
-      { title: "Mindset practice", icon: Brain },
-      { title: "QHHT reflections", icon: Sparkles },
-      { title: "Sovereign choices", icon: Feather }
+      { title: "Connection", icon: HeartHandshake },
+      { title: "Awareness", icon: Brain },
+      { title: "Healing", icon: Sparkles },
+      { title: "Sovereignty", icon: Feather },
+      { title: "Purpose", icon: Compass }
     ]
   },
   {
     id: "home-lifestyle",
-    title: "Home & Lifestyle",
-    shortTitle: "Home",
-    tagline: "NZ roots, cattery life, cottage projects, and slow living.",
+    title: "Home & Living",
+    shortTitle: "Lifestyle",
+    tagline: "The five pillars of our grounded, family-first lifestyle.",
     summary:
-      "Our New Zealand chapter: land, animals, seasonal rituals, and the home base that makes travel possible.",
+      "Sovereign living, nature, roots, income-generating property, and food security built around family.",
     color: "sage",
     icon: Home,
-    topics: ["NZ roots", "Cattery & cottage", "Slow living"],
+    topics: ["Sovereign Lifestyle", "Nature & Outdoor Adventures", "Connection to Roots", "Income Generating Property", "Food Security & Self Sufficiency"],
     features: [
-      { title: "NZ home base", icon: Home },
-      { title: "Slow living", icon: Leaf },
-      { title: "Cottage notes", icon: Feather }
+      { title: "Sovereign choices", icon: Compass },
+      { title: "Nature connection", icon: Leaf },
+      { title: "Income property", icon: Home }
     ]
   },
   {
     id: "building-public",
-    title: "Building in Public",
-    shortTitle: "Building",
-    tagline: "Apps, AI tools, experiments, and startup lessons.",
+    title: "AI Tools",
+    shortTitle: "AI Tools",
+    tagline: "Creative tools, workflows, project ideas, and scalable income systems.",
     summary:
-      "A transparent record of building products, learning fast, and turning ideas into useful tools.",
+      "Practical ways to use AI for creativity, family projects, automation, products, and online income.",
     color: "ink",
     icon: Bot,
-    topics: ["Entrepreneurship", "AI tools", "Slow living systems"],
+    topics: ["Why AI?", "What AI Tools Can I Use?", "Workflow & Step-by-Step Guidance", "I Have an Idea. Now What?", "How Do I Make Money & Scale?"],
     features: [
-      { title: "Product experiments", icon: Bot },
-      { title: "Lessons learned", icon: Brain },
-      { title: "Public progress", icon: Compass }
+      { title: "Creative AI", icon: Bot },
+      { title: "Step-by-step workflows", icon: Brain },
+      { title: "Scalable ideas", icon: Compass }
     ]
   }
 ];

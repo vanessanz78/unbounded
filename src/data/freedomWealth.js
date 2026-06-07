@@ -17,23 +17,23 @@ import {
 
 export const freedomPillars = [
   {
-    id: "trading",
+    id: "online-trading",
     number: "1",
     title: "Online Trading",
     shortTitle: "Trading",
     icon: CandlestickChart,
-    accent: "navy",
-    promise: "Structured trading, prop firms, and repeatable strategies that fit around family life.",
+    accent: "teal",
+    promise: "Trade anywhere. Live everywhere.",
     description:
-      "Vanessa’s trading path began as a practical way to create location-independent income without being tied to a desk all day. The focus is simple: short, structured windows, clear rules, and strategies that can be practiced around family life.",
+      "Online trading gives our family the freedom to create consistent income from anywhere in the world with structure, discipline, and funded accounts.",
     highlights: [
-      "Bounce Strategy: reading a level rejection and waiting for confirmation.",
-      "Break Strategy: identifying support or resistance breaks and capturing the move as it unfolds.",
-      "Prop firm trading: starting with a small challenge and learning to trade funded capital.",
-      "Primary focus: NASDAQ and Gold futures, so the learning stays simple and repeatable."
+      "Trade from anywhere with an internet connection and a laptop.",
+      "Use funded accounts to access capital without risking life savings.",
+      "Build repeatable strategies around rules, risk, and consistency.",
+      "Create income options that can travel with your family."
     ],
-    cta: "Join AbundantFreedom.online",
-    imageHint: "Trading desk, clean chart setup, laptop lifestyle",
+    cta: "Learn online trading",
+    imageHint: "Trading desk, laptop charts, family freedom",
     guideImage: "/online-trading-guide.png",
     guidePdf: "/guides/online-trading-quick-reference.pdf"
   },
@@ -44,17 +44,17 @@ export const freedomPillars = [
     shortTitle: "Online Income",
     icon: Laptop,
     accent: "fern",
-    promise: "Build an audience, share your story, and turn useful content into income.",
+    promise: "Location-independent income that fits family life.",
     description:
-      "Social media can become a real income stream when it is treated like a system: consistent publishing, honest storytelling, engaged community, and offers that genuinely help people.",
+      "Online income can become a practical family freedom tool when it is treated like a system: useful content, clear offers, repeatable workflows, and businesses that can travel with you.",
     highlights: [
-      "YouTube: long-life content with monetization from around 1,000 subscribers and 4,000 watch hours.",
-      "Instagram: strong for visual brand building, sponsored content, and affiliate links.",
-      "TikTok: fast reach and trend-based visibility, especially for short family or lifestyle stories.",
-      "Newsletters: direct connection, no algorithm ceiling, and a natural home for recommendations."
+      "Build websites, platforms, courses, and digital products that solve real problems.",
+      "Use social media and newsletters to share your story and grow trust.",
+      "Automate repeatable work so the business supports life instead of consuming it.",
+      "Design offers around family-first freedom, service, and practical value."
     ],
-    cta: "Build the content engine",
-    imageHint: "Content creation, phone on tripod, laptop and coffee",
+    cta: "Build the online income engine",
+    imageHint: "Content creation, dashboards, laptop and family freedom",
     guideImage: "/social-media-online-income-guide.png",
     guidePdf: "/guides/social-media-online-income-quick-reference.pdf"
   },
@@ -65,7 +65,7 @@ export const freedomPillars = [
     shortTitle: "Affiliates",
     icon: HandCoins,
     accent: "gold",
-    promise: "Monetize trust through aligned tools, ethical links, and useful recommendations.",
+    promise: "Earn by sharing tools and resources we trust.",
     description:
       "Affiliate income works best when it is grounded in trust. The aim is not to promote everything, but to share tools, platforms, books, courses, and products you already use or believe in.",
     highlights: [
@@ -86,14 +86,14 @@ export const freedomPillars = [
     shortTitle: "Stocks",
     icon: TrendingUp,
     accent: "navy",
-    promise: "Simple long-term investing for lump sums, weekly contributions, ETFs, and individual stocks.",
+    promise: "Grow wealth steadily through smart investing.",
     description:
       "Investing does not need to be intimidating. Whether you have a lump sum to allocate or you are starting with $50 to $150 a week, the goal is a clear, calm plan that can grow over time.",
     highlights: [
-      "For lump sums: consider diversified equities, blue-chip companies, and dividend income.",
-      "For weekly investing: automate contributions through Sharesies, Moomoo, or similar platforms.",
-      "ETFs offer broad diversification and can be easier to set and forget.",
-      "Individual stocks offer more control but need more research and emotional discipline."
+      "Use diversified equities, blue-chip companies, and dividend income.",
+      "Automate weekly contributions through Sharesies, Moomoo, or similar platforms.",
+      "Use ETFs for broad diversification and a calmer set-and-forget approach.",
+      "Research individual stocks slowly and avoid emotional decisions."
     ],
     cta: "Start the investing plan",
     imageHint: "Charts, compound growth, calm finance visuals",
@@ -107,17 +107,17 @@ export const freedomPillars = [
     shortTitle: "Bitcoin",
     icon: Bitcoin,
     accent: "teal",
-    promise: "Buy, hold, protect, spend, and pass on Bitcoin with family sovereignty in mind.",
+    promise: "Protect your wealth and opt out of broken systems.",
     description:
-      "Bitcoin is more than an investment. For families who value mobility, financial responsibility, and long-term sovereignty, it can become part of a global money system that travels with you.",
+      "Bitcoin is more than an investment. It is a path to financial sovereignty. It gives your family options no matter where life takes you.",
     highlights: [
-      "NZ-friendly tools include STACKED, Moomoo, Sharesies, and BlackBull Markets.",
-      "Begin with soft wallets for small amounts, then move long-term holdings to hardware wallets.",
-      "Self-custody means protecting your keys, seed phrases, devices, and inheritance plan.",
-      "Bitcoin can be held long-term, transferred globally, and converted for spending when needed."
+      "Portable wealth you can take anywhere in the world.",
+      "Borderless and permissionless money for a global life.",
+      "Fixed supply of 21 million protects against inflation.",
+      "Self-custody gives you choice, control, and resilience."
     ],
     cta: "Build Bitcoin sovereignty",
-    imageHint: "Hardware wallets, Bitcoin education, family legacy",
+    imageHint: "Bitcoin, self-custody, family financial sovereignty",
     guideImage: "/bitcoin-sovereignty-guide.png",
     guidePdf: "/guides/bitcoin-sovereignty-quick-reference.pdf"
   }
@@ -189,8 +189,8 @@ export const platformGroups = [
 ];
 
 export const comparisonRows = [
-  ["Online Trading", "Days to weeks", "From $100", "High active income", "Hands-on learners"],
-  ["Social Media & Online Income", "Months", "$0 to $100", "Medium to high", "Creators and communicators"],
+  ["Online Trading", "Weeks to months", "Evaluation fee", "High active income potential", "Disciplined learners"],
+  ["Social Media & Online Income", "Months", "$0 to $100", "Medium to high", "Creators and builders"],
   ["Affiliates & Partnerships", "Weeks to months", "$0 to $100", "Medium", "Audience builders"],
   ["Stocks & Investing", "Months to years", "From $50/week", "Medium passive growth", "Long-term builders"],
   ["Bitcoin & Sovereignty", "Months to years", "From $20/week", "High long-term potential", "Future-focused families"]

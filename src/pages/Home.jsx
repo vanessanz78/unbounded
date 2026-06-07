@@ -160,34 +160,34 @@ export default function Home() {
         </article>
 
         <div className="mt-5 grid gap-5 md:grid-cols-1">
-        <article className="premium-panel grid gap-8 p-6 sm:grid-cols-[1fr_0.85fr] sm:p-8 lg:items-center">
-          <div>
-            <p className="eyebrow inline-flex items-center gap-2">
-              <Plane size={15} /> Where We’re Heading
-            </p>
-            <h2 className="mt-4 font-display text-4xl font-bold">Bali, Panama & Beyond</h2>
-            <div className="mt-5 space-y-4 text-lg leading-8 text-ink/70">
-              <p>We believe home can be more than one place.</p>
-              <p>
-                From the rice fields and creative communities of Bali to the freedom and
-                opportunity emerging in Panama, we’re exploring destinations that align with a
-                slower, more intentional way of life.
+          <article className="premium-panel grid gap-8 p-6 sm:grid-cols-[1fr_0.85fr] sm:p-8 lg:items-center">
+            <div>
+              <p className="eyebrow inline-flex items-center gap-2">
+                <Plane size={15} /> Where We’re Heading
               </p>
-              <p>Places where family, freedom, culture, and possibility intersect.</p>
+              <h2 className="mt-4 font-display text-4xl font-bold">Bali, Panama & Beyond</h2>
+              <div className="mt-5 space-y-4 text-lg leading-8 text-ink/70">
+                <p>We believe home can be more than one place.</p>
+                <p>
+                  From the rice fields and creative communities of Bali to the freedom and
+                  opportunity emerging in Panama, we’re exploring destinations that align with a
+                  slower, more intentional way of life.
+                </p>
+                <p>Places where family, freedom, culture, and possibility intersect.</p>
+              </div>
+              <a className="btn-primary mt-6" href="#/journey">
+                See Our Plan
+              </a>
             </div>
-            <a className="btn-primary mt-6" href="#/journey">
-              See Our Plan
-            </a>
-          </div>
-          <div
-            className="relative min-h-[420px] overflow-hidden rounded-lg bg-cover bg-center shadow-soft"
-            style={{ backgroundImage: "url('/bali-panama-beyond-rice-fields.png')" }}
-            role="img"
-            aria-label="Bali rice terraces at sunrise"
-          >
-            <div className="absolute inset-0 bg-gradient-to-t from-ink/18 via-transparent to-transparent" />
-          </div>
-        </article>
+            <div
+              className="relative min-h-[420px] overflow-hidden rounded-lg bg-cover bg-center shadow-soft"
+              style={{ backgroundImage: "url('/bali-panama-beyond-rice-fields.png')" }}
+              role="img"
+              aria-label="Bali rice terraces at sunrise"
+            >
+              <div className="absolute inset-0 bg-gradient-to-t from-ink/18 via-transparent to-transparent" />
+            </div>
+          </article>
         </div>
       </section>
 
