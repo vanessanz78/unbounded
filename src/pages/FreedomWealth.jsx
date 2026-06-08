@@ -2328,21 +2328,37 @@ export default function FreedomWealth() {
             </h2>
           </div>
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            {platformGroups.map(({ title, icon: Icon, items }) => (
-              <article key={title} className="rounded-lg border border-forest/10 bg-mist p-6 shadow-sm">
-                <Icon className="text-forest" size={32} />
-                <h3 className="mt-4 font-display text-xl font-bold text-ink">{title}</h3>
-                <ul className="mt-4 space-y-2 text-sm leading-6 text-ink/72">
-                  {items.map((item) => (
-                    <li key={item}>• {item}</li>
-                  ))}
-                </ul>
-                <span className="mt-5 inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.16em] text-forest">
-                  View Details
-                  <ExternalLink size={14} />
-                </span>
-              </article>
-            ))}
+            {platformGroups.map(({ title, icon: Icon, items }) => {
+              const hrefByTitle = {
+                "Trading & Investing": "#/freedom-wealth?section=online-trading",
+                "Crypto & Bitcoin": "#/freedom-wealth?section=bitcoin",
+                "Wallet Security": "#/freedom-wealth?section=bitcoin",
+                "Courses & Community": toolLinks.abundantFreedom
+              };
+              const href = hrefByTitle[title];
+              const isExternal = href?.startsWith("http");
+
+              return (
+                <article key={title} className="flex min-h-[330px] flex-col rounded-lg border border-forest/10 bg-mist p-6 shadow-sm">
+                  <Icon className="text-forest" size={32} />
+                  <h3 className="mt-4 font-display text-xl font-bold text-ink">{title}</h3>
+                  <ul className="mt-4 space-y-2 text-sm leading-6 text-ink/72">
+                    {items.map((item) => (
+                      <li key={item}>• {item}</li>
+                    ))}
+                  </ul>
+                  <a
+                    href={href}
+                    target={isExternal ? "_blank" : undefined}
+                    rel={isExternal ? "noreferrer" : undefined}
+                    className="mt-auto inline-flex items-center gap-2 pt-5 text-xs font-extrabold uppercase tracking-[0.16em] text-forest transition hover:text-manuka focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-manuka"
+                  >
+                    View Details
+                    {isExternal ? <ExternalLink size={14} /> : <ArrowRight size={14} />}
+                  </a>
+                </article>
+              );
+            })}
           </div>
         </div>
       </section>
