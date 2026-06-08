@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { contentArms } from "../data/contentArms.js";
 import { getArmHref, getTopicHref } from "../data/contentArmLinks.js";
+import { discordUrl } from "../data/socialLinks.js";
 
 const paths = [
   {
@@ -34,8 +35,8 @@ const paths = [
   },
   {
     title: "Join the Community",
-    text: "Sign up for updates and future Abundant Freedom community links.",
-    href: "#/contact",
+    text: "Join our Discord server and connect with the community.",
+    href: discordUrl,
     icon: Mail,
     image: "/join-community.png"
   },
@@ -88,6 +89,8 @@ export default function StartHere() {
             <a
               key={title}
               href={href}
+              target={href.startsWith("http") ? "_blank" : undefined}
+              rel={href.startsWith("http") ? "noreferrer" : undefined}
               className="group overflow-hidden rounded-lg border border-forest/10 bg-white shadow-soft transition hover:-translate-y-1 hover:shadow-editorial"
             >
               <div

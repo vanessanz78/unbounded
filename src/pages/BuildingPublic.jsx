@@ -28,8 +28,10 @@ import {
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import PillarDetailNavigation from "../components/PillarDetailNavigation.jsx";
+import { getAmazonBookLink } from "../data/amazonBookLinks.js";
+import { toolLinks } from "../data/toolLinks.js";
 
-const replitReferralUrl = "https://replit.com/refer/vanessanz";
+const replitReferralUrl = toolLinks.replit;
 
 const aiSections = [
   {
@@ -79,6 +81,12 @@ function getRequestedSection() {
   const query = window.location.hash.split("?")[1] || "";
   const requested = new URLSearchParams(query).get("section");
   return aiSections.some((section) => section.id === requested) ? requested : "why-ai";
+}
+
+function getRequestedAnchor() {
+  if (typeof window === "undefined") return "";
+  const query = window.location.hash.split("?")[1] || "";
+  return new URLSearchParams(query).get("anchor") || "";
 }
 
 function CheckItem({ children }) {
@@ -185,7 +193,19 @@ function AITools() {
         <a href={replitReferralUrl} target="_blank" rel="noreferrer" className="font-bold text-forest underline decoration-manuka/60 underline-offset-4">
           Replit
         </a>
-        {", Codex, Supabase, GitHub, and API tools let you build and deploy websites, dashboards, and apps locally or online."}
+        {", "}
+        <a href={toolLinks.openaiCodex} target="_blank" rel="noreferrer" className="font-bold text-forest underline decoration-manuka/60 underline-offset-4">
+          Codex
+        </a>
+        {", "}
+        <a href={toolLinks.supabase} target="_blank" rel="noreferrer" className="font-bold text-forest underline decoration-manuka/60 underline-offset-4">
+          Supabase
+        </a>
+        {", "}
+        <a href={toolLinks.github} target="_blank" rel="noreferrer" className="font-bold text-forest underline decoration-manuka/60 underline-offset-4">
+          GitHub
+        </a>
+        {", and API tools let you build and deploy websites, dashboards, and apps locally or online."}
       </>
     ]
   ];
@@ -414,7 +434,19 @@ function MoneyScale() {
               <a href={replitReferralUrl} target="_blank" rel="noreferrer" className="font-bold text-forest underline decoration-manuka/60 underline-offset-4">
                 Replit
               </a>
-              {", Codex, GitHub, and Supabase to create a seamless production pipeline."}
+              {", "}
+              <a href={toolLinks.openaiCodex} target="_blank" rel="noreferrer" className="font-bold text-forest underline decoration-manuka/60 underline-offset-4">
+                Codex
+              </a>
+              {", "}
+              <a href={toolLinks.github} target="_blank" rel="noreferrer" className="font-bold text-forest underline decoration-manuka/60 underline-offset-4">
+                GitHub
+              </a>
+              {", and "}
+              <a href={toolLinks.supabase} target="_blank" rel="noreferrer" className="font-bold text-forest underline decoration-manuka/60 underline-offset-4">
+                Supabase
+              </a>
+              {" to create a seamless production pipeline."}
             </CheckItem>
           </ul>
           <div className="mt-8 rounded-lg bg-ink p-5 text-white shadow-sm">
@@ -532,22 +564,22 @@ export default function BuildingPublic() {
   ];
 
   const liveProjects = [
-    ["StayDirect.nz", "Property management made simple.", "/project-staydirect-nz.png"],
-    ["CatStays.app", "Connecting cat parents with trusted sitters.", "/project-catstays-app.png"],
-    ["Fudi.nz", "Local food, local people, local connection.", "/project-fudi-nz.jpg"],
-    ["GuidedHealing.nz", "Healing sessions and spiritual reflection.", "/project-guidedhealing-nz.png"],
-    ["AbundantFreedom.online", "Strategies, tools and freedom resources.", "/project-abundantfreedom-online.png"]
+    ["StayDirect.nz", "Property management made simple.", "/project-staydirect-nz.png", toolLinks.stayDirect],
+    ["CatStays.app", "Connecting cat parents with trusted sitters.", "/project-catstays-app.png", toolLinks.catStays],
+    ["Fudi.nz", "Local food, local people, local connection.", "/project-fudi-nz.jpg", toolLinks.fudi],
+    ["GuidedHealing.nz", "Healing sessions and spiritual reflection.", "/project-guidedhealing-nz.png", toolLinks.guidedHealing],
+    ["AbundantFreedom.online", "Strategies, tools and freedom resources.", "/project-abundantfreedom-online.png", toolLinks.abundantFreedom]
   ];
 
   const toolStack = [
-    ["ChatGPT", "AI assistant", "https://www.google.com/s2/favicons?domain=chatgpt.com&sz=128"],
-    ["Midjourney", "Image generation", "https://www.google.com/s2/favicons?domain=midjourney.com&sz=128"],
-    ["Runway", "AI video creation", "https://www.google.com/s2/favicons?domain=runwayml.com&sz=128"],
-    ["Descript", "Audio and video editing", "https://www.google.com/s2/favicons?domain=descript.com&sz=128"],
+    ["ChatGPT", "AI assistant", "https://www.google.com/s2/favicons?domain=chatgpt.com&sz=128", toolLinks.chatgpt],
+    ["Midjourney", "Image generation", "https://www.google.com/s2/favicons?domain=midjourney.com&sz=128", toolLinks.midjourney],
+    ["Runway", "AI video creation", "https://www.google.com/s2/favicons?domain=runwayml.com&sz=128", toolLinks.runway],
+    ["Descript", "Audio and video editing", "https://www.google.com/s2/favicons?domain=descript.com&sz=128", toolLinks.descript],
     ["Replit", "Code and apps", "https://www.google.com/s2/favicons?domain=replit.com&sz=128", replitReferralUrl],
-    ["Figma", "Design and prototyping", "https://www.google.com/s2/favicons?domain=figma.com&sz=128"],
-    ["Make", "Automation", "https://www.google.com/s2/favicons?domain=make.com&sz=128"],
-    ["Notion", "Notes and docs", "https://www.google.com/s2/favicons?domain=notion.so&sz=128"]
+    ["Figma", "Design and prototyping", "https://www.google.com/s2/favicons?domain=figma.com&sz=128", toolLinks.figma],
+    ["Make", "Automation", "https://www.google.com/s2/favicons?domain=make.com&sz=128", toolLinks.make],
+    ["Notion", "Notes and docs", "https://www.google.com/s2/favicons?domain=notion.so&sz=128", toolLinks.notion]
   ];
 
   const bookResources = [
@@ -592,7 +624,15 @@ export default function BuildingPublic() {
   ];
 
   useEffect(() => {
-    const syncActiveSection = () => setActiveId(getRequestedSection());
+    const syncActiveSection = () => {
+      setActiveId(getRequestedSection());
+      const requestedAnchor = getRequestedAnchor();
+      if (requestedAnchor) {
+        window.setTimeout(() => {
+          document.getElementById(requestedAnchor)?.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 80);
+      }
+    };
     syncActiveSection();
     window.addEventListener("hashchange", syncActiveSection);
     return () => window.removeEventListener("hashchange", syncActiveSection);
@@ -627,10 +667,9 @@ export default function BuildingPublic() {
     <main className="bg-mist">
       <section className="relative overflow-hidden bg-ink text-white">
         <img
-          src="/home-family-portrait.png"
-          alt=""
+          src="/ai-tools-mum-daughter.jpeg"
+          alt="Mum and daughter using a laptop at sunset"
           className="absolute inset-0 h-full w-full object-cover object-center opacity-68"
-          aria-hidden="true"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/86 to-ink/22" />
         <div className="container-page relative grid min-h-[520px] items-center gap-8 py-14 lg:grid-cols-[0.48fr_0.52fr]">
@@ -754,7 +793,7 @@ export default function BuildingPublic() {
         </div>
       </section>
 
-      <section className="bg-white py-8">
+      <section id="ai-tools-we-use" className="scroll-mt-28 bg-white py-8">
         <div className="container-page grid gap-6 lg:grid-cols-[0.25fr_0.75fr] lg:items-center">
           <div>
             <p className="eyebrow text-manuka">Tools we use</p>
@@ -808,14 +847,20 @@ export default function BuildingPublic() {
               <p className="mt-3 font-display text-xl italic text-manuka">Built with purpose.</p>
             </div>
             <div className="grid gap-3 md:grid-cols-5">
-              {liveProjects.map(([title, text, image]) => (
-                <article key={title} className="overflow-hidden rounded-md border border-white/12 bg-white/8">
+              {liveProjects.map(([title, text, image, href]) => (
+                <a
+                  key={title}
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="block overflow-hidden rounded-md border border-white/12 bg-white/8 transition hover:-translate-y-0.5 hover:border-manuka/70"
+                >
                   <div className="h-28 bg-cover bg-center" style={{ backgroundImage: `url('${image}')` }} />
                   <div className="p-3">
                     <h3 className="break-words text-[0.8rem] font-extrabold leading-tight text-white">{title}</h3>
                     <p className="mt-1 text-xs leading-5 text-white/68">{text}</p>
                   </div>
-                </article>
+                </a>
               ))}
             </div>
           </div>
@@ -864,7 +909,14 @@ export default function BuildingPublic() {
           </div>
           <div className="grid gap-3 md:grid-cols-5">
             {bookResources.map(([title, author, image]) => (
-              <article key={title} className="rounded-lg border border-white/12 bg-white/8 p-3">
+              <a
+                key={title}
+                href={getAmazonBookLink(title, author)}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`Open ${title} on Amazon`}
+                className="rounded-lg border border-white/12 bg-white/8 p-3 no-underline transition hover:-translate-y-1 hover:border-manuka/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-manuka"
+              >
                 <div className="flex h-40 items-center justify-center rounded-md bg-ink/24 p-2 shadow-md">
                   <img
                     src={image}
@@ -876,7 +928,7 @@ export default function BuildingPublic() {
                 </div>
                 <h3 className="mt-3 text-sm font-extrabold text-white">{title}</h3>
                 <p className="mt-1 text-xs text-white/60">{author}</p>
-              </article>
+              </a>
             ))}
           </div>
         </div>
@@ -928,7 +980,7 @@ export default function BuildingPublic() {
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <a href="#/contact" className="btn-primary bg-manuka text-ink hover:bg-sand">Join the Community</a>
-              <a href="#ai-guide" className="btn-secondary border-manuka/55">Start With a Guide</a>
+              <a href="#/guides-library" className="btn-secondary border-manuka/55">Start With a Guide</a>
             </div>
           </div>
           <aside className="rounded-lg border border-manuka/35 bg-ink/72 p-5 backdrop-blur">

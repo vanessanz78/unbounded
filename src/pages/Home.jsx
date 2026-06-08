@@ -12,16 +12,17 @@ export default function Home() {
     <>
       <section className="relative overflow-hidden bg-ink text-white">
         <div className="absolute inset-0">
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: "linear-gradient(135deg, rgba(4,39,34,1), rgba(10,66,54,.96) 46%, rgba(4,39,34,1))"
-            }}
+          <img
+            src="/home-family-portrait.png"
+            alt="The Wilson family together overlooking rice terraces"
+            className="h-full w-full object-cover object-[62%_center]"
           />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_88%_20%,rgba(215,168,79,.38),transparent_18rem),radial-gradient(circle_at_5%_90%,rgba(3,23,22,.7),transparent_28rem)]" />
+          <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/76 to-ink/16" />
+          <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-ink/12" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_82%_18%,rgba(215,168,79,.28),transparent_18rem),radial-gradient(circle_at_5%_90%,rgba(3,23,22,.72),transparent_28rem)]" />
         </div>
-        <div className="container-page relative grid min-h-[620px] items-center gap-10 py-16">
-          <div className="max-w-2xl">
+        <div className="container-page relative grid min-h-[650px] items-center gap-10 py-16 sm:min-h-[700px]">
+          <div className="max-w-2xl" style={{ textShadow: "0 2px 28px rgba(3, 23, 22, 0.42)" }}>
             <p className="eyebrow text-manuka">Live freely. Learn globally. Love deeply.</p>
             <div className="my-5 flex items-center gap-3 text-manuka">
               <span className="h-px w-20 bg-manuka" />

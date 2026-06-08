@@ -5,9 +5,9 @@ import Logo from "./Logo.jsx";
 const navItems = [
   { label: "Our Story", href: "#/our-story" },
   { label: "Freedom & Wealth", href: "#/freedom-wealth" },
-  { label: "Family & Travel", href: "#/family-travel" },
+  { label: "Family & Travel", href: "#/family-travel?section=why-travel" },
   { label: "Conscious Living", href: "#/spiritual-conscious" },
-  { label: "Home & Living", href: "#/home-lifestyle" },
+  { label: "Home & Living", href: "#/home-lifestyle?section=sovereign-lifestyle" },
   { label: "AI Tools", href: "#/using-ai-tools" }
 ];
 

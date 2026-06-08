@@ -20,6 +20,7 @@ import {
   Users,
   Waves
 } from "lucide-react";
+import { toolLinks } from "../data/toolLinks.js";
 
 const familyMembers = [
   {
@@ -238,25 +239,28 @@ const shapedPlaces = [
 export default function OurStory() {
   return (
     <main>
-      <section className="relative overflow-hidden bg-ink py-16 text-white">
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(4,39,34,.96),rgba(4,39,34,.78)),url('/nz-header-pano.jpg')] bg-cover bg-center opacity-90" />
-        <div className="container-page relative grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
-          <div>
+      <section className="relative overflow-hidden bg-ink text-white">
+        <div className="absolute inset-0">
+          <img
+            src="/pataua-log.png"
+            alt="The Unbordered Family sitting on a log at Pataua beach"
+            className="h-full w-full object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/76 to-ink/18" />
+          <div className="absolute inset-0 bg-gradient-to-t from-ink/72 via-transparent to-ink/20" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_86%,rgba(3,23,22,.78),transparent_30rem)]" />
+        </div>
+        <div className="container-page relative grid min-h-[620px] items-center py-16 sm:min-h-[680px]">
+          <div className="max-w-2xl" style={{ textShadow: "0 2px 28px rgba(3, 23, 22, 0.48)" }}>
             <p className="eyebrow text-manuka">Our Story</p>
-            <h1 className="mt-4 font-display text-5xl font-bold leading-tight text-sand">
+            <h1 className="mt-4 font-display text-5xl font-bold leading-tight text-sand sm:text-6xl">
               Kia ora and welcome to The Unbordered Family.
             </h1>
-            <p className="mt-6 text-lg leading-8 text-sand/84">
+            <p className="mt-6 max-w-xl text-lg leading-8 text-sand/86">
               We are Vanessa, Paul, and our four wonderful children, Isabella, Mia, Kaia, and
               Harlo, and we’d love to share our journey with you.
             </p>
           </div>
-          <div
-            className="min-h-[360px] overflow-hidden rounded-lg border border-manuka/20 bg-cover bg-center shadow-editorial"
-            style={{ backgroundImage: "url('/pataua-log.png')" }}
-            role="img"
-            aria-label="The Unbordered Family sitting on a log at Pataua beach"
-          />
         </div>
       </section>
 
@@ -286,7 +290,7 @@ export default function OurStory() {
             </div>
             <div className="mt-7 grid gap-5">
               <a
-                href="https://DeloraineCattery.com"
+                href={toolLinks.deloraineCattery}
                 className="flex gap-5 rounded-lg border border-forest/10 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-soft"
               >
                 <span className="grid h-16 w-16 shrink-0 place-items-center rounded-full bg-sage text-forest">
@@ -302,7 +306,7 @@ export default function OurStory() {
                 </span>
               </a>
               <a
-                href="https://DeloraineCottage.com"
+                href={toolLinks.deloraineCottage}
                 className="flex gap-5 rounded-lg border border-forest/10 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-soft"
               >
                 <span className="grid h-16 w-16 shrink-0 place-items-center rounded-full bg-sage text-forest">

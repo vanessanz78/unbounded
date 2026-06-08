@@ -1,5 +1,6 @@
 import { BookOpen } from "lucide-react";
 import { useRef } from "react";
+import { getAmazonBookLink } from "../data/amazonBookLinks.js";
 
 const readingShelves = [
   {
@@ -125,13 +126,20 @@ function BookShelf({ shelf }) {
             className="flex snap-x gap-6 overflow-x-auto pb-5 md:px-12 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-forest/20 [&::-webkit-scrollbar-track]:bg-transparent"
           >
             {shelf.books.map(([title, author, cover]) => (
-              <article key={`${shelf.id}-${title}`} className="w-36 shrink-0 snap-start text-center">
+              <a
+                key={`${shelf.id}-${title}`}
+                href={getAmazonBookLink(title, author)}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`Open ${title} on Amazon`}
+                className="w-36 shrink-0 snap-start text-center no-underline transition hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-manuka"
+              >
                 <div className="mx-auto h-48 w-32 overflow-hidden rounded-md bg-sage shadow-soft">
                   <img src={cover} alt={`${title} book cover`} className="h-full w-full object-cover" loading="lazy" />
                 </div>
                 <h3 className="mx-auto mt-4 max-w-36 text-sm font-extrabold leading-5 text-ink">{title}</h3>
                 <p className="mt-2 text-xs leading-4 text-ink/58">{author}</p>
-              </article>
+              </a>
             ))}
           </div>
         </div>

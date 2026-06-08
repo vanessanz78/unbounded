@@ -30,6 +30,7 @@ import {
   Waves,
   X
 } from "lucide-react";
+import { toolLinks } from "../data/toolLinks.js";
 
 const pillars = [
   {
@@ -107,12 +108,12 @@ const pillars = [
 ];
 
 const projectCards = [
-  ["Deloraine Cattery", "Our primary income stream. Purpose-built with love, designed for cat comfort.", "/home-deloraine-cattery.png", ""],
-  ["Deloraine Cottage", "French-inspired guest accommodation that gives guests a true Northland stay.", "/home-deloraine-cottage.png", "https://delorainecottage.com"],
-  ["GuidedHealing.nz", "A calm spiritual platform helping people soften into presence.", "/home-guidedhealing-nz.png", ""],
-  ["StayDirect.nz", "Property management tools for hosts and travellers.", "/home-staydirect-nz.png", ""],
-  ["CatStays.app", "Helping cattery owners streamline bookings.", "/home-catstays-app.png", ""],
-  ["AbundantFreedom.online", "Trading, tools and freedom resources for building income with clarity.", "/home-abundantfreedom-online.png", ""]
+  ["Deloraine Cattery", "Our primary income stream. Purpose-built with love, designed for cat comfort.", "/home-deloraine-cattery.png", toolLinks.deloraineCattery],
+  ["Deloraine Cottage", "French-inspired guest accommodation that gives guests a true Northland stay.", "/home-deloraine-cottage.png", toolLinks.deloraineCottage],
+  ["GuidedHealing.nz", "A calm spiritual platform helping people soften into presence.", "/home-guidedhealing-nz.png", toolLinks.guidedHealing],
+  ["StayDirect.nz", "Property management tools for hosts and travellers.", "/home-staydirect-nz.png", toolLinks.stayDirect],
+  ["CatStays.app", "Helping cattery owners streamline bookings.", "/home-catstays-app.png", toolLinks.catStays],
+  ["AbundantFreedom.online", "Trading, tools and freedom resources for building income with clarity.", "/home-abundantfreedom-online.png", toolLinks.abundantFreedom]
 ];
 
 const dayMoments = [
@@ -167,12 +168,24 @@ const guidePopups = {
   }
 };
 
+const defaultPillarId = "sovereign-lifestyle";
+
 export default function HomeLifestyle() {
   const [activeId, setActiveId] = useState(() => getSectionFromHash());
   const activePillar = useMemo(() => pillars.find((pillar) => pillar.id === activeId) || null, [activeId]);
 
   useEffect(() => {
-    const onHashChange = () => setActiveId(getSectionFromHash());
+    const onHashChange = () => {
+      const nextSection = getSectionFromHash();
+      setActiveId(nextSection);
+      const explicitSection = getExplicitSectionFromHash();
+      if (explicitSection) {
+        window.setTimeout(() => {
+          document.getElementById(explicitSection)?.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 80);
+      }
+    };
+    onHashChange();
     window.addEventListener("hashchange", onHashChange);
     return () => window.removeEventListener("hashchange", onHashChange);
   }, []);
@@ -226,7 +239,7 @@ export default function HomeLifestyle() {
                 Explore Our Lifestyle
                 <ArrowRight size={16} />
               </a>
-              <a href="https://delorainecottage.com" target="_blank" rel="noreferrer" className="btn-secondary border-manuka/55">
+              <a href={toolLinks.deloraineCottage} target="_blank" rel="noreferrer" className="btn-secondary border-manuka/55">
                 Deloraine Cottage
                 <ArrowRight size={16} />
               </a>
@@ -261,6 +274,10 @@ export default function HomeLifestyle() {
 }
 
 function getSectionFromHash() {
+  return getExplicitSectionFromHash() || defaultPillarId;
+}
+
+function getExplicitSectionFromHash() {
   if (typeof window === "undefined") return "";
   const raw = window.location.hash.replace("#", "") || "/";
   const query = raw.split("?")[1]?.split("#")[0] || "";
@@ -479,7 +496,7 @@ function LifestyleOverview() {
             </p>
           </div>
           <div className="flex flex-wrap gap-3 lg:justify-end">
-            <a href="#/family-travel" className="btn-primary bg-manuka text-ink hover:bg-sand">Explore Family & Travel</a>
+            <a href="#/family-travel?section=why-travel" className="btn-primary bg-manuka text-ink hover:bg-sand">Explore Family & Travel</a>
             <a href="#/freedom-wealth" className="btn-secondary border-manuka/55">Explore Freedom & Wealth</a>
           </div>
         </div>

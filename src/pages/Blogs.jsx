@@ -25,7 +25,7 @@ const tagLinks = {
   "Conscious Living": "#/spiritual-conscious",
   "Digital Creativity": "#/blogs",
   Entrepreneurship: "#/using-ai-tools?section=idea-now-what",
-  "Family & Travel": "#/family-travel",
+  "Family & Travel": "#/family-travel?section=why-travel",
   "NZ Roots": "#/home-lifestyle?section=connection-to-roots",
   "Home & Living": "#/home-lifestyle",
   "Sovereign lifestyle": "#/home-lifestyle?section=sovereign-lifestyle",

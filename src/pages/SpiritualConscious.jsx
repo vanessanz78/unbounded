@@ -4,6 +4,8 @@ import {
   BookOpen,
   Brain,
   CheckCircle2,
+  ChevronLeft,
+  ChevronRight,
   Compass,
   Download,
   Eye,
@@ -21,6 +23,8 @@ import {
   X
 } from "lucide-react";
 import PillarDetailNavigation from "../components/PillarDetailNavigation.jsx";
+import { getAmazonBookLink } from "../data/amazonBookLinks.js";
+import { toolLinks } from "../data/toolLinks.js";
 
 const pillars = [
   {
@@ -250,42 +254,42 @@ const supportTools = [
     text: "Quantum Healing Hypnosis Technique sessions for deeper healing and guidance.",
     image: "/qhht-session-tool.png",
     action: "Learn More",
-    href: "https://guidedhealing.nz"
+    href: toolLinks.guidedHealing
   },
   {
     title: "Angel Numbers",
     text: "Daily guidance, symbols and messages to support your journey.",
     image: "/angel-numbers-tool.png",
     action: "Learn More",
-    href: "https://guidedhealing.nz/tools/angel-numbers"
+    href: toolLinks.angelNumbers
   },
   {
     title: "AuraCam",
     text: "Aura insights and chakra reflections to help you understand your energy.",
     image: "/auracam-tool.png",
     action: "Learn More",
-    href: "https://guidedhealing.nz/tools/auracam"
+    href: toolLinks.auracam
   },
   {
     title: "Guided Healing Website",
     text: "Energy healing sessions, meditations and spiritual support.",
     image: "/home-guidedhealing-nz.png",
     action: "Visit Site",
-    href: "https://guidedhealing.nz/#home"
+    href: toolLinks.guidedHealingHome
   },
   {
     title: "Abundance Mindset YouTube",
     text: "Inspiration, mindset shifts and conscious conversations.",
-    icon: PlaySquare,
+    image: "https://img.youtube.com/vi/_I2c8F70GjE/hqdefault.jpg",
     action: "Watch Now",
-    href: "https://youtu.be/_I2c8F70GjE?si=CYLiaWfsgHp2kKsw"
+    href: toolLinks.abundanceMindsetVideo
   },
   {
     title: "Know Thyself Podcast",
     text: "Deep conversations on spirituality, self-awareness, healing and conscious growth.",
-    icon: PlaySquare,
+    image: "https://img.youtube.com/vi/kUm0KS7Jyn4/hqdefault.jpg",
     action: "Watch Now",
-    href: "https://www.youtube.com/@Andreduqum"
+    href: toolLinks.knowThyselfVideo
   },
   {
     title: "Journal & Reflection Tools",
@@ -310,6 +314,20 @@ function getInitialPillar() {
   return pillars.some((pillar) => pillar.id === candidate) ? candidate : "connection";
 }
 
+function getRequestedAnchor() {
+  if (typeof window === "undefined") return "";
+  const hash = window.location.hash.replace(/^#/, "");
+  return new URLSearchParams(hash.split("?")[1] || "").get("anchor") || "";
+}
+
+function scrollToRequestedAnchor() {
+  const anchor = getRequestedAnchor();
+  if (!anchor) return;
+  window.setTimeout(() => {
+    document.getElementById(anchor)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, 80);
+}
+
 export default function SpiritualConscious() {
   const [activeId, setActiveId] = useState(getInitialPillar);
   const [openGuideId, setOpenGuideId] = useState("");
@@ -319,7 +337,11 @@ export default function SpiritualConscious() {
   const openGuide = openCustomGuide || (openGuideId ? pillars.find((pillar) => pillar.id === openGuideId) : null);
 
   useEffect(() => {
-    const onHashChange = () => setActiveId(getInitialPillar());
+    const onHashChange = () => {
+      setActiveId(getInitialPillar());
+      scrollToRequestedAnchor();
+    };
+    scrollToRequestedAnchor();
     window.addEventListener("hashchange", onHashChange);
     return () => window.removeEventListener("hashchange", onHashChange);
   }, []);
@@ -369,7 +391,7 @@ export default function SpiritualConscious() {
         </div>
       </section>
 
-      <section className="container-page pb-14">
+      <section id="spiritual-detail" className="container-page scroll-mt-28 pb-14">
         {activePillar ? (
           <PillarDetail pillar={activePillar} onOpenGuide={() => setOpenGuideId(activePillar.id)} />
         ) : (
@@ -413,15 +435,23 @@ function Hero({ pillar }) {
   };
 
   return (
-    <section className="relative overflow-hidden bg-white">
-      <div className="absolute inset-y-0 right-0 hidden w-[58%] bg-cover bg-center lg:block" style={{ backgroundImage: `url('${pillar.heroImage}')` }} />
-      <div className="absolute inset-0 bg-gradient-to-r from-mist via-mist/90 to-mist/10" />
-      <div className="container-page relative grid min-h-[540px] items-center py-16">
-        <div className="max-w-2xl">
+    <section className="relative overflow-hidden bg-ink text-white">
+      <div className="absolute inset-0">
+        <img
+          src={pillar.heroImage}
+          alt={`${pillar.title} conscious living visual`}
+          className="h-full w-full object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/78 to-ink/18" />
+        <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-ink/16" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_9%_88%,rgba(3,23,22,.76),transparent_30rem)]" />
+      </div>
+      <div className="container-page relative grid min-h-[620px] items-center py-16 sm:min-h-[680px]">
+        <div className="max-w-2xl" style={{ textShadow: "0 2px 28px rgba(3, 23, 22, 0.48)" }}>
           <p className="eyebrow text-manuka">Spiritual & Conscious Living</p>
-          <h1 className="mt-4 font-display text-5xl font-bold leading-[0.98] text-ink sm:text-7xl">{pillar.title}</h1>
+          <h1 className="mt-4 font-display text-5xl font-bold leading-[0.98] text-sand sm:text-7xl">{pillar.title}</h1>
           <p className="mt-2 font-display text-3xl font-semibold italic leading-tight text-manuka">{pillar.tagline}</p>
-          <p className="mt-5 max-w-xl text-base leading-7 text-ink/72">
+          <p className="mt-5 max-w-xl text-base leading-7 text-sand/84">
             A worldview that creates freedom through presence, reverence, healing, responsibility and purpose.
           </p>
           <div className="mt-7 grid max-w-xl gap-4 sm:grid-cols-3">
@@ -430,21 +460,21 @@ function Hero({ pillar }) {
               ["Guided", "by values", Heart],
               ["Living", "with purpose", Sun]
             ].map(([title, text, Icon]) => (
-              <div key={title} className="flex items-center gap-3 border-r border-forest/10 last:border-r-0">
-                <Icon size={24} className="text-forest" />
-                <p className="text-xs font-bold text-ink">
+              <div key={title} className="flex items-center gap-3 border-r border-white/16 last:border-r-0">
+                <Icon size={24} className="text-manuka" />
+                <p className="text-xs font-bold text-sand">
                   {title}
-                  <span className="block font-medium text-ink/64">{text}</span>
+                  <span className="block font-medium text-sand/68">{text}</span>
                 </p>
               </div>
             ))}
           </div>
           <div className="mt-8 flex flex-wrap gap-3">
-            <button type="button" onClick={() => scrollToSection("spiritual-tools")} className="btn-primary">
+            <button type="button" onClick={() => scrollToSection("spiritual-tools")} className="btn-primary bg-manuka text-ink hover:bg-sand">
               View Tools
               <ArrowRight size={16} />
             </button>
-            <button type="button" onClick={() => scrollToSection("spiritual-guides")} className="btn-light">
+            <button type="button" onClick={() => scrollToSection("spiritual-guides")} className="btn-secondary border-manuka/75 text-sand hover:bg-manuka hover:text-ink">
               Free Guides
               <ArrowRight size={16} />
             </button>
@@ -491,10 +521,6 @@ function PillarDetail({ pillar, onOpenGuide }) {
           <div className="absolute left-4 top-4 grid h-16 w-16 place-items-center rounded-full border border-manuka/70 bg-white/90 font-display text-2xl font-bold text-manuka">
             {pillar.number}
           </div>
-          <blockquote className="absolute bottom-0 left-0 right-0 bg-forest/94 p-5 font-display text-lg leading-7 text-sand">
-            “{pillar.quote}”
-            <span className="mt-2 block text-xs font-sans text-sand/70">- {pillar.quoteBy}</span>
-          </blockquote>
         </div>
 
         <div>
@@ -593,7 +619,14 @@ function SharedBooks() {
           className="flex snap-x gap-6 overflow-x-auto px-0 pb-5 md:px-12 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-forest/20 [&::-webkit-scrollbar-track]:bg-transparent"
         >
           {bookLibrary.map(([title, author, cover]) => (
-            <article key={title} className="w-36 shrink-0 snap-start text-center">
+            <a
+              key={title}
+              href={getAmazonBookLink(title, author)}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`Open ${title} on Amazon`}
+              className="w-36 shrink-0 snap-start text-center no-underline transition hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-manuka"
+            >
               <div className="mx-auto h-48 w-32 overflow-hidden rounded-md bg-sage shadow-soft">
                 {cover ? (
                   <img src={cover} alt={`${title} book cover`} className="h-full w-full object-cover" />
@@ -607,7 +640,7 @@ function SharedBooks() {
               </div>
               <h3 className="mx-auto mt-4 max-w-36 text-sm font-extrabold leading-5 text-ink">{title}</h3>
               <p className="mt-2 text-xs leading-4 text-ink/58">{author}</p>
-            </article>
+            </a>
           ))}
         </div>
       </div>
@@ -616,6 +649,13 @@ function SharedBooks() {
 }
 
 function PracticalTools({ onOpenGuide }) {
+  const toolsRef = useRef(null);
+  const scrollTools = (direction) => {
+    const container = toolsRef.current;
+    if (!container) return;
+    container.scrollBy({ left: direction * Math.min(container.clientWidth * 0.86, 980), behavior: "smooth" });
+  };
+
   return (
     <section id="spiritual-tools" className="container-page scroll-mt-28 pb-14">
       <div className="rounded-lg border border-forest/10 bg-white/72 p-5 shadow-soft sm:p-7">
@@ -624,41 +664,67 @@ function PracticalTools({ onOpenGuide }) {
           title="Practical Tools & Support"
           text="Tools and spaces that support our daily practice and growth."
         />
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
-          {supportTools.map(({ title, text, image, icon: Icon, action, href, guideImage }) => (
-            <article key={title} className="flex min-h-[390px] flex-col rounded-lg border border-forest/10 bg-white p-4 text-center shadow-sm">
-              <div className="h-40 w-full overflow-hidden rounded-md bg-sage">
-                {image ? (
-                  <img src={image} alt="" className="h-full w-full object-cover" />
-                ) : (
-                  <div className="grid h-full w-full place-items-center bg-mist">
-                    <Icon className="text-manuka" size={58} strokeWidth={1.45} />
-                  </div>
-                )}
-              </div>
-              <div className="flex flex-1 flex-col items-center">
-                <h3 className="mt-5 font-display text-xl font-bold leading-tight text-ink">{title}</h3>
-                <p className="mt-3 max-w-[18rem] text-sm leading-6 text-ink/64">{text}</p>
-              </div>
-              <div className="card-action-row mt-6 min-h-11 items-end">
-                {guideImage ? (
-                  <button
-                    type="button"
-                    onClick={() => onOpenGuide({ title, tagline: text, guideImage })}
-                    className="btn-light px-4 py-2 text-xs"
-                  >
-                    {action}
-                    <ArrowRight size={14} />
-                  </button>
-                ) : (
-                  <a href={href} target={href.startsWith("http") ? "_blank" : undefined} rel={href.startsWith("http") ? "noreferrer" : undefined} className="btn-light px-4 py-2 text-xs">
-                    {action}
-                    <ArrowRight size={14} />
-                  </a>
-                )}
-              </div>
-            </article>
-          ))}
+        <div className="relative mt-8">
+          <button
+            type="button"
+            onClick={() => scrollTools(-1)}
+            className="absolute left-0 top-1/2 z-10 hidden h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-forest/10 bg-white/90 text-forest shadow-soft transition hover:border-manuka hover:bg-forest hover:text-white md:grid"
+            aria-label="Previous tools"
+          >
+            <ChevronLeft size={22} />
+          </button>
+          <button
+            type="button"
+            onClick={() => scrollTools(1)}
+            className="absolute right-0 top-1/2 z-10 hidden h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-forest/10 bg-white/90 text-forest shadow-soft transition hover:border-manuka hover:bg-forest hover:text-white md:grid"
+            aria-label="Next tools"
+          >
+            <ChevronRight size={22} />
+          </button>
+          <div
+            ref={toolsRef}
+            role="list"
+            className="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-1 pb-6 md:px-12 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-forest/20 [&::-webkit-scrollbar-track]:bg-transparent"
+          >
+            {supportTools.map(({ title, text, image, icon: Icon, action, href, guideImage }) => (
+              <article
+                key={title}
+                role="listitem"
+                className="flex min-h-[390px] w-[82vw] max-w-[20rem] shrink-0 snap-start flex-col rounded-lg border border-forest/10 bg-white p-4 text-center shadow-sm sm:w-[20rem] lg:w-[21rem]"
+              >
+                <div className="h-40 w-full overflow-hidden rounded-md bg-sage">
+                  {image ? (
+                    <img src={image} alt="" className="h-full w-full object-cover" />
+                  ) : (
+                    <div className="grid h-full w-full place-items-center bg-mist">
+                      <Icon className="text-manuka" size={58} strokeWidth={1.45} />
+                    </div>
+                  )}
+                </div>
+                <div className="flex flex-1 flex-col items-center">
+                  <h3 className="mt-5 font-display text-xl font-bold leading-tight text-ink">{title}</h3>
+                  <p className="mt-3 max-w-[18rem] text-sm leading-6 text-ink/64">{text}</p>
+                </div>
+                <div className="card-action-row mt-6 min-h-11 items-end">
+                  {guideImage ? (
+                    <button
+                      type="button"
+                      onClick={() => onOpenGuide({ title, tagline: text, guideImage })}
+                      className="btn-light px-4 py-2 text-xs"
+                    >
+                      {action}
+                      <ArrowRight size={14} />
+                    </button>
+                  ) : (
+                    <a href={href} target={href.startsWith("http") ? "_blank" : undefined} rel={href.startsWith("http") ? "noreferrer" : undefined} className="btn-light px-4 py-2 text-xs">
+                      {action}
+                      <ArrowRight size={14} />
+                    </a>
+                  )}
+                </div>
+              </article>
+            ))}
+          </div>
         </div>
       </div>
     </section>

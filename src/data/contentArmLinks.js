@@ -1,6 +1,6 @@
 export const armLinks = {
   "freedom-wealth": "#/freedom-wealth",
-  "family-travel": "#/family-travel",
+  "family-travel": "#/family-travel?section=why-travel",
   "spiritual-conscious": "#/spiritual-conscious",
   "home-lifestyle": "#/home-lifestyle",
   "building-public": "#/using-ai-tools"

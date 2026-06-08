@@ -49,9 +49,10 @@ import {
   freedomQuickGuides,
   freedomPillars,
   platformGroups,
-  readingList,
   stockGrowthRows
 } from "../data/freedomWealth.js";
+import { getAmazonBookLink } from "../data/amazonBookLinks.js";
+import { toolLinks } from "../data/toolLinks.js";
 import PillarDetailNavigation from "../components/PillarDetailNavigation.jsx";
 
 const accentClasses = {
@@ -59,15 +60,6 @@ const accentClasses = {
   fern: "bg-fern text-white",
   gold: "bg-manuka text-ink",
   teal: "bg-pounamu text-white"
-};
-
-const readingByPillar = {
-  "online-trading": ["Trading & Mindset", "Personal Finance & Money Mindset"],
-  bitcoin: ["Bitcoin & Financial Sovereignty", "Personal Finance & Money Mindset"],
-  stocks: ["Investing & Long-Term Wealth", "Personal Finance & Money Mindset"],
-  "online-income": ["Passive Income & Online Entrepreneurship", "Personal Finance & Money Mindset"],
-  affiliates: ["Passive Income & Online Entrepreneurship", "Personal Finance & Money Mindset"],
-  "protect-preserve": ["Bitcoin & Financial Sovereignty", "Personal Finance & Money Mindset"]
 };
 
 const guideFallbackByPillar = {
@@ -85,11 +77,6 @@ function getGuideForPillar(pillarId) {
   return freedomQuickGuides.find((guide) => guide.id === guideId);
 }
 
-function getReadingForPillar(pillarId) {
-  const categories = readingByPillar[pillarId] || [];
-  return readingList.filter((category) => categories.includes(category.category));
-}
-
 function getGuideTargetPillar(guideId) {
   if (freedomPillars.some((pillar) => pillar.id === guideId)) return guideId;
   return guideTargetById[guideId] || "online-trading";
@@ -100,6 +87,12 @@ function getRequestedPillarId() {
   const query = window.location.hash.split("?")[1] || "";
   const section = new URLSearchParams(query).get("section");
   return freedomPillars.some((pillar) => pillar.id === section) ? section : "";
+}
+
+function getCurrentHashPath() {
+  if (typeof window === "undefined") return "/";
+  const hash = window.location.hash.replace("#", "") || "/";
+  return hash.split(/[?#]/)[0] || "/";
 }
 
 const freedomBookLibrary = [
@@ -170,10 +163,22 @@ const freedomBookLibrary = [
     cover: "https://covers.openlibrary.org/b/isbn/9780470398562-L.jpg"
   },
   {
+    title: "The Biggest Loser Wins",
+    author: "Bob Lang",
+    tag: "Trading mindset",
+    cover: ""
+  },
+  {
     title: "Rich Dad Poor Dad",
     author: "Robert T. Kiyosaki",
     tag: "Assets & cash flow",
     cover: "https://covers.openlibrary.org/b/isbn/9781612680194-L.jpg"
+  },
+  {
+    title: "Multiple Streams of Income",
+    author: "Robert G. Allen",
+    tag: "Income streams",
+    cover: "https://covers.openlibrary.org/b/id/302117-L.jpg"
   },
   {
     title: "Crushing It!",
@@ -198,6 +203,12 @@ const freedomBookLibrary = [
     author: "Vicki Robin & Joe Dominguez",
     tag: "Money & life energy",
     cover: "https://covers.openlibrary.org/b/isbn/9780143115762-L.jpg"
+  },
+  {
+    title: "The Total Money Makeover",
+    author: "Dave Ramsey",
+    tag: "Money reset",
+    cover: "https://covers.openlibrary.org/b/id/6873839-L.jpg"
   },
   {
     title: "I Will Teach You to Be Rich",
@@ -491,49 +502,56 @@ const affiliatePartnerPlatforms = [
     mark: "moomoo",
     icon: LineChart,
     accent: "text-[#ff6a00]",
-    text: "Advanced charting, market data, and smart investing tools."
+    text: "Advanced charting, market data, and smart investing tools.",
+    href: toolLinks.moomoo
   },
   {
     name: "Sharesies",
     mark: "Sharesies",
     icon: Sprout,
     accent: "text-[#ff3f8f]",
-    text: "Simple investing for New Zealand and Australia."
+    text: "Simple investing for New Zealand and Australia.",
+    href: toolLinks.sharesies
   },
   {
-    name: "STAKED",
-    mark: "STAKED",
+    name: "STACKED",
+    mark: "STACKED",
     icon: BitcoinIcon,
     accent: "text-[#0d8f57]",
-    text: "Automated crypto investing and Bitcoin savings."
+    text: "Automated crypto investing and Bitcoin savings.",
+    href: toolLinks.stacked
   },
   {
     name: "BlackBull Markets",
     mark: "BlackBull",
     icon: TrendingUp,
     accent: "text-ink",
-    text: "Global broker with stocks, crypto, and trading tools."
+    text: "Global broker with stocks, crypto, and trading tools.",
+    href: toolLinks.blackbull
   },
   {
     name: "Ledger",
     mark: "Ledger",
     icon: HardDrive,
     accent: "text-ink",
-    text: "Hardware wallets to secure your crypto and your future."
+    text: "Hardware wallets to secure your crypto and your future.",
+    href: toolLinks.ledger
   },
   {
-    name: "Twelve",
-    mark: "twelve",
+    name: "Twelve Labs",
+    mark: "Twelve Labs",
     icon: Landmark,
     accent: "text-[#7b5cff]",
-    text: "Modern banking built for a borderless lifestyle."
+    text: "AI video intelligence for searchable content, research, and media workflows.",
+    href: toolLinks.twelveLabs
   },
   {
     name: "Airpoints",
     mark: "Airpoints",
     icon: Plane,
     accent: "text-ink",
-    text: "Earn and use points for travel, upgrades, and experiences."
+    text: "Earn and use points for travel, upgrades, and experiences.",
+    href: toolLinks.airpoints
   }
 ];
 
@@ -764,7 +782,9 @@ const wealthLegacyCards = [
       "They receive simple, clear instructions.",
       "Your wealth, your way, even when you are not here."
     ],
-    callout: "Plan today so your family can access tomorrow."
+    callout: "Plan today so your family can access tomorrow.",
+    href: toolLinks.theBitcoinWay,
+    linkLabel: "Visit The Bitcoin Way"
   },
   {
     title: "Karma Group & Lifestyle Legacy",
@@ -777,7 +797,9 @@ const wealthLegacyCards = [
       "Pass down holidays, not just money.",
       "Create traditions that last for generations."
     ],
-    callout: "Legacy can be memories, access, and options."
+    callout: "Legacy can be memories, access, and options.",
+    href: toolLinks.karmaGroup,
+    linkLabel: "Visit Karma Group"
   }
 ];
 
@@ -887,7 +909,7 @@ function OnlineTradingPillarDetail({ activePillar, activeGuide, onViewAll }) {
             </p>
             <div className="card-action-row mt-7 justify-start gap-3">
               <a
-                href="https://www.abundantfreedom.online/"
+                href={toolLinks.abundantFreedom}
                 target="_blank"
                 rel="noreferrer"
                 className="btn-primary"
@@ -906,8 +928,8 @@ function OnlineTradingPillarDetail({ activePillar, activeGuide, onViewAll }) {
 
           <div className="relative min-h-[430px] overflow-hidden bg-forest">
             <img
-              src="/online-trading-psychology-parents.png"
-              alt="Online trading workspace with family life in the background"
+              src="/dad-online-trading.png"
+              alt="Dad trading online while children play nearby"
               className="absolute inset-0 h-full w-full object-cover object-right"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-white/78 via-white/18 to-forest/5" />
@@ -998,7 +1020,7 @@ function OnlineTradingPillarDetail({ activePillar, activeGuide, onViewAll }) {
   );
 }
 
-function StocksPillarDetail({ activePillar, activeReading, activeGuide, onViewAll }) {
+function StocksPillarDetail({ activePillar, activeGuide, onViewAll }) {
   return (
     <section id="pillar-detail" className="container-page pb-16">
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
@@ -1034,24 +1056,12 @@ function StocksPillarDetail({ activePillar, activeReading, activeGuide, onViewAl
             </p>
           </div>
 
-          <div className="relative min-h-[360px] overflow-hidden bg-forest p-6">
+          <div className="relative min-h-[360px] overflow-hidden bg-forest">
             <img
-              src="/freedom-and-wealth.png"
-              alt="Mountain landscape representing long-term investing"
+              src="/stocks-and-investing-header.png"
+              alt="Laptop showing stock market charts on a coastal table at sunset"
               className="absolute inset-0 h-full w-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-white/70 via-white/35 to-forest/5" />
-            <div className="absolute inset-0 bg-gradient-to-t from-forest/65 via-forest/20 to-transparent" />
-            <div className="relative grid h-full items-center lg:grid-cols-[0.58fr_0.42fr]">
-              <MiniChartScreen />
-              <div className="mt-6 rounded-lg border border-manuka/30 bg-forest/92 p-5 text-white shadow-editorial lg:ml-3 lg:mt-auto">
-                <p className="font-display text-4xl leading-none text-manuka">“</p>
-                <p className="mt-1 text-sm font-semibold leading-6">
-                  The best investment you can make is in your future.
-                </p>
-                <Sprout className="mt-4 text-manuka" size={19} />
-              </div>
-            </div>
           </div>
         </div>
 
@@ -1111,20 +1121,11 @@ function StocksPillarDetail({ activePillar, activeReading, activeGuide, onViewAl
         </div>
       </div>
 
-      <div id="pillar-reading-list" className="mt-10">
-        <div className="mb-6 max-w-3xl">
-          <p className="eyebrow text-manuka">Reading List</p>
-          <h2 className="mt-2 font-display text-3xl font-bold text-ink">
-            Books and resources for steady investing.
-          </h2>
-        </div>
-        <ReadingCards items={activeReading} />
-      </div>
     </section>
   );
 }
 
-function OnlineIncomePillarDetail({ activePillar, activeReading, activeGuide, onViewAll }) {
+function OnlineIncomePillarDetail({ activePillar, activeGuide, onViewAll }) {
   return (
     <section id="pillar-detail" className="container-page pb-16">
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
@@ -1162,20 +1163,10 @@ function OnlineIncomePillarDetail({ activePillar, activeReading, activeGuide, on
 
           <div className="relative min-h-[360px] overflow-hidden bg-forest">
             <img
-              src="/blending-hobbies-income.png"
-              alt="Laptop workspace for building online income"
-              className="absolute inset-0 h-full w-full object-cover object-right"
+              src="/online-income-photo.png"
+              alt="Woman building online income from a laptop workspace"
+              className="absolute inset-0 h-full w-full object-cover object-center"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-white/72 via-white/35 to-forest/10" />
-            <div className="absolute inset-0 bg-gradient-to-t from-forest/70 via-forest/20 to-transparent" />
-            <div className="absolute bottom-6 right-6 max-w-xs rounded-lg border border-manuka/30 bg-forest/92 p-5 text-white shadow-editorial">
-              <p className="font-display text-4xl leading-none text-manuka">“</p>
-              <p className="mt-1 text-sm font-semibold leading-6">
-                The goal is not just more income. The goal is more freedom, time,
-                and options for our family.
-              </p>
-              <Sprout className="mt-4 text-manuka" size={19} />
-            </div>
           </div>
         </div>
 
@@ -1271,15 +1262,6 @@ function OnlineIncomePillarDetail({ activePillar, activeReading, activeGuide, on
         </div>
       </div>
 
-      <div id="pillar-reading-list" className="mt-10">
-        <div className="mb-6 max-w-3xl">
-          <p className="eyebrow text-manuka">Reading List</p>
-          <h2 className="mt-2 font-display text-3xl font-bold text-ink">
-            Books and resources for online income.
-          </h2>
-        </div>
-        <ReadingCards items={activeReading} />
-      </div>
     </section>
   );
 }
@@ -1291,12 +1273,17 @@ function AffiliatePartnersRow() {
         <p className="eyebrow text-manuka">Partners & Platforms We Love</p>
       </div>
       <div className="mt-6 grid overflow-hidden rounded-lg border border-forest/10 bg-white shadow-sm md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7">
-        {affiliatePartnerPlatforms.map(({ name, mark, icon: Icon, accent, text }, index) => (
-          <article
+        {affiliatePartnerPlatforms.map(({ name, mark, icon: Icon, accent, text, href }, index) => {
+          const CardTag = href ? "a" : "article";
+          return (
+          <CardTag
             key={name}
-            className={`flex min-h-[190px] flex-col items-center border-forest/10 p-5 text-center ${
+            href={href || undefined}
+            target={href ? "_blank" : undefined}
+            rel={href ? "noreferrer" : undefined}
+            className={`flex min-h-[190px] flex-col items-center border-forest/10 p-5 text-center transition ${
               index < affiliatePartnerPlatforms.length - 1 ? "xl:border-r" : ""
-            }`}
+            } ${href ? "hover:bg-sage/70" : ""}`}
           >
             <div className={`flex min-h-10 items-center justify-center gap-2 text-lg font-extrabold ${accent}`}>
               <Icon size={24} strokeWidth={1.8} />
@@ -1304,8 +1291,15 @@ function AffiliatePartnersRow() {
             </div>
             <h3 className="mt-5 text-sm font-extrabold text-ink">{name}</h3>
             <p className="mt-3 text-sm leading-6 text-ink/68">{text}</p>
-          </article>
-        ))}
+            {href && (
+              <span className="mt-auto inline-flex items-center gap-2 pt-4 text-xs font-extrabold uppercase tracking-wide text-manuka">
+                Visit platform
+                <ArrowRight size={14} />
+              </span>
+            )}
+          </CardTag>
+          );
+        })}
       </div>
       <div className="mt-5 flex flex-col items-center gap-3 rounded-lg bg-sage/70 p-4 text-center sm:flex-row sm:text-left">
         <Star className="shrink-0 text-forest" size={25} />
@@ -1318,7 +1312,7 @@ function AffiliatePartnersRow() {
   );
 }
 
-function AffiliatesPillarDetail({ activePillar, activeReading, activeGuide, onViewAll }) {
+function AffiliatesPillarDetail({ activePillar, activeGuide, onViewAll }) {
   return (
     <section id="pillar-detail" className="container-page pb-16">
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
@@ -1366,8 +1360,8 @@ function AffiliatesPillarDetail({ activePillar, activeReading, activeGuide, onVi
 
           <div className="relative min-h-[380px] overflow-hidden bg-forest">
             <img
-              src="/blending-hobbies-income.png"
-              alt="Laptop workspace for trusted tools and affiliate resources"
+              src="/partnership-photo.png"
+              alt="Partnership planning conversation at a laptop"
               className="absolute inset-0 h-full w-full object-cover object-right"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-white/85 via-white/25 to-transparent" />
@@ -1521,20 +1515,11 @@ function AffiliatesPillarDetail({ activePillar, activeReading, activeGuide, onVi
         </div>
       </div>
 
-      <div id="pillar-reading-list" className="mt-10">
-        <div className="mb-6 max-w-3xl">
-          <p className="eyebrow text-manuka">Reading List</p>
-          <h2 className="mt-2 font-display text-3xl font-bold text-ink">
-            Books and resources for affiliates and partnerships.
-          </h2>
-        </div>
-        <ReadingCards items={activeReading} />
-      </div>
     </section>
   );
 }
 
-function BitcoinPillarDetail({ activePillar, activeReading, activeGuide, onViewAll }) {
+function BitcoinPillarDetail({ activePillar, activeGuide, onViewAll }) {
   return (
     <section id="pillar-detail" className="container-page pb-16">
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
@@ -1571,9 +1556,9 @@ function BitcoinPillarDetail({ activePillar, activeReading, activeGuide, onViewA
 
           <div className="relative min-h-[340px] overflow-hidden bg-forest">
             <img
-              src="/freedom-and-wealth.png"
-              alt="Mountain landscape representing Bitcoin sovereignty"
-              className="absolute inset-0 h-full w-full object-cover"
+              src="/bitcoin-header.png"
+              alt="Gold Bitcoin coin in front of a rising market chart"
+              className="absolute inset-0 h-full w-full object-cover object-[42%_center]"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-white via-white/55 to-forest/10" />
             <div className="absolute inset-0 bg-gradient-to-t from-forest/45 via-transparent to-transparent" />
@@ -1701,7 +1686,7 @@ function BitcoinPillarDetail({ activePillar, activeReading, activeGuide, onViewA
 
           <article className="relative overflow-hidden rounded-lg bg-forest p-7 text-white shadow-soft">
             <div className="absolute inset-0 opacity-15">
-              <img src="/freedom-and-wealth.png" alt="" className="h-full w-full object-cover" aria-hidden="true" />
+              <img src="/bitcoin-header.png" alt="" className="h-full w-full object-cover" aria-hidden="true" />
             </div>
             <div className="relative grid gap-6 lg:grid-cols-[0.62fr_0.38fr]">
               <div>
@@ -1725,46 +1710,7 @@ function BitcoinPillarDetail({ activePillar, activeReading, activeGuide, onViewA
         </div>
       </div>
 
-      <div id="pillar-reading-list" className="mt-10">
-        <div className="mb-6 max-w-3xl">
-          <p className="eyebrow text-manuka">Reading List</p>
-          <h2 className="mt-2 font-display text-3xl font-bold text-ink">
-            Books and resources for Bitcoin sovereignty.
-          </h2>
-        </div>
-        <ReadingCards items={activeReading} />
-      </div>
     </section>
-  );
-}
-
-function ReadingCards({ items }) {
-  return (
-    <div className="grid gap-5 lg:grid-cols-2">
-      {items.map(({ category, icon: Icon, books }) => (
-        <article key={category} className="rounded-lg border border-forest/10 bg-white p-6 shadow-soft">
-          <div className="flex items-center gap-3">
-            <span className="grid h-11 w-11 place-items-center rounded-full bg-sage text-forest">
-              <Icon size={22} />
-            </span>
-            <h3 className="font-display text-xl font-bold text-ink">{category}</h3>
-          </div>
-          <div className="mt-5 grid gap-3">
-            {books.map(([title, author, description]) => (
-              <div key={title} className="rounded-lg bg-mist p-4">
-                <p className="font-bold text-ink">{title}</p>
-                <p className="mt-1 text-xs font-extrabold uppercase tracking-wide text-forest">{author}</p>
-                <p className="mt-2 text-sm leading-6 text-ink/70">{description}</p>
-                <span className="mt-3 inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-wide text-manuka">
-                  Affiliate link placeholder
-                  <ExternalLink size={13} />
-                </span>
-              </div>
-            ))}
-          </div>
-        </article>
-      ))}
-    </div>
   );
 }
 
@@ -1837,7 +1783,14 @@ function ScrollingBookReferences() {
             className="flex snap-x gap-6 overflow-x-auto pb-5 md:px-14 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-forest/20 [&::-webkit-scrollbar-track]:bg-transparent"
           >
             {freedomBookLibrary.map((book) => (
-              <article key={book.title} className="flex w-44 shrink-0 snap-start flex-col text-center">
+              <a
+                key={book.title}
+                href={getAmazonBookLink(book.title, book.author)}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`Open ${book.title} on Amazon`}
+                className="flex w-44 shrink-0 snap-start flex-col text-center no-underline transition hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-manuka"
+              >
                 <BookCover book={book} />
                 <h3 className="mx-auto mt-4 max-w-40 font-display text-base font-bold leading-tight text-ink">
                   {book.title}
@@ -1846,7 +1799,7 @@ function ScrollingBookReferences() {
                 <span className="mx-auto mt-3 rounded-full bg-sage px-3 py-1 text-[0.65rem] font-extrabold uppercase tracking-wide text-forest">
                   {book.tag}
                 </span>
-              </article>
+              </a>
             ))}
           </div>
         </div>
@@ -1987,8 +1940,8 @@ function ProtectPreserveSection() {
         </div>
 
         <div className="mt-8 grid gap-5 lg:grid-cols-2">
-          {wealthLegacyCards.map(({ title, icon: Icon, text, points, callout }) => (
-            <article key={title} className="relative overflow-hidden rounded-lg bg-mist p-6 shadow-sm ring-1 ring-forest/10">
+          {wealthLegacyCards.map(({ title, icon: Icon, text, points, callout, href, linkLabel }) => (
+            <article key={title} className="relative flex h-full flex-col overflow-hidden rounded-lg bg-mist p-6 shadow-sm ring-1 ring-forest/10">
               <div className="grid gap-6 sm:grid-cols-[1fr_150px] sm:items-center">
                 <div>
                   <h3 className="font-display text-2xl font-bold text-ink">{title}</h3>
@@ -2004,6 +1957,17 @@ function ProtectPreserveSection() {
               <p className="mt-5 rounded-lg bg-sage px-4 py-3 text-sm font-bold leading-6 text-ink/78">
                 {callout}
               </p>
+              <div className="mt-auto flex justify-center pt-5">
+                <a
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-manuka/55 bg-white px-5 text-sm font-extrabold text-forest shadow-sm transition hover:-translate-y-0.5 hover:border-forest hover:bg-forest hover:text-white"
+                >
+                  {linkLabel}
+                  <ExternalLink size={16} aria-hidden="true" />
+                </a>
+              </div>
             </article>
           ))}
         </div>
@@ -2016,49 +1980,41 @@ function AbundantFreedomWorkshopFooter() {
   return (
     <section className="container-page pb-16">
       <a
-        href="https://www.abundantfreedom.online/"
+        href={toolLinks.abundantFreedom}
         target="_blank"
         rel="noreferrer"
-        className="group grid overflow-hidden rounded-lg border border-manuka/25 bg-forest text-white shadow-editorial transition hover:-translate-y-0.5 hover:shadow-[0_24px_60px_rgba(4,47,39,0.28)] lg:grid-cols-[220px_1fr_320px]"
+        aria-label="Learn more at AbundantFreedom.online"
+        className="group relative grid min-h-[260px] overflow-hidden rounded-lg border border-manuka/25 bg-forest text-sand shadow-editorial transition hover:-translate-y-0.5 hover:shadow-[0_24px_60px_rgba(4,47,39,0.28)] lg:grid-cols-[minmax(0,1fr)_320px]"
       >
-        <div className="relative min-h-[190px] overflow-hidden lg:min-h-0">
-          <img
-            src="/vanessa.png"
-            alt="Vanessa from Abundant Freedom"
-            className="h-full w-full object-cover object-[center_32%] transition duration-500 group-hover:scale-105"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent to-forest/30 lg:bg-gradient-to-r" />
-        </div>
-
-        <div className="flex flex-col justify-center px-6 py-7 sm:px-8 lg:px-10">
+        <img
+          src="/nz-header-pano.jpg"
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-[1.03]"
+          loading="lazy"
+          aria-hidden="true"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-ink/95 via-forest/76 to-ink/24" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_24%,rgba(215,168,79,0.24),transparent_30rem)]" />
+        <div className="relative flex max-w-3xl flex-col justify-center px-6 py-8 sm:px-8 lg:px-10">
           <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-manuka">
-            Free Workshop
+            Abundant Freedom
           </p>
-          <h2 className="mt-2 font-display text-2xl font-bold leading-tight text-sand sm:text-3xl">
-            Learn how we turn $100 into real payouts.
+          <h2 className="mt-3 font-display text-3xl font-bold leading-tight text-sand sm:text-4xl">
+            Build income that supports the life you want.
           </h2>
-          <p className="mt-3 max-w-3xl text-sm font-semibold leading-7 text-white/82 sm:text-base">
-            Join my free workshop where I break down the exact strategies, systems,
-            and mindset we use to create consistent income from the markets.
+          <p className="mt-4 max-w-2xl text-sm font-semibold leading-7 text-sand/84 sm:text-base">
+            Learn the trading systems, structure, and mindset we use to create more choice,
+            resilience, and location freedom.
           </p>
         </div>
-
-        <div className="flex flex-col items-center justify-center gap-4 border-t border-white/10 px-6 pb-7 sm:px-8 lg:border-l lg:border-t-0 lg:py-7">
+        <div className="relative flex flex-col items-center justify-center gap-4 border-t border-white/10 px-6 pb-8 sm:px-8 lg:border-l lg:border-t-0 lg:py-8">
           <span className="inline-flex w-full items-center justify-center gap-3 rounded-lg bg-manuka px-6 py-4 text-center text-sm font-extrabold uppercase tracking-wide text-ink shadow-sm transition group-hover:bg-sand">
-            Join the Free Workshop
+            Visit Abundant Freedom
             <ArrowRight size={19} />
           </span>
-          <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-sm font-semibold text-white/78">
-            <span className="inline-flex items-center gap-2">
-              <Clock size={16} className="text-manuka" />
-              Live Online
-            </span>
-            <span className="hidden text-white/40 sm:inline">•</span>
-            <span className="inline-flex items-center gap-2">
-              <RefreshCw size={16} className="text-manuka" />
-              Replay Available
-            </span>
-          </div>
+          <p className="text-center text-xs font-semibold uppercase tracking-[0.14em] text-sand/68">
+            Create freedom. Live fully.
+          </p>
         </div>
       </a>
     </section>
@@ -2066,20 +2022,22 @@ function AbundantFreedomWorkshopFooter() {
 }
 
 export default function FreedomWealth() {
-  const [activeId, setActiveId] = useState(() => getRequestedPillarId() || "online-trading");
+  const [activeId, setActiveId] = useState(() => getRequestedPillarId());
   const activePillar = freedomPillars.find((pillar) => pillar.id === activeId);
   const activeGuide = activePillar ? getGuideForPillar(activePillar.id) : null;
-  const activeReading = activePillar ? getReadingForPillar(activePillar.id) : [];
   const ActiveIcon = activePillar?.icon;
 
   useEffect(() => {
     const syncRequestedPillar = () => {
+      if (getCurrentHashPath() !== "/freedom-wealth") return;
       const requestedPillarId = getRequestedPillarId();
       if (requestedPillarId) {
         setActiveId(requestedPillarId);
         window.setTimeout(() => {
           document.getElementById("pillar-detail")?.scrollIntoView({ behavior: "smooth", block: "start" });
         }, 80);
+      } else {
+        setActiveId("");
       }
     };
 
@@ -2116,10 +2074,9 @@ export default function FreedomWealth() {
     <main className="bg-mist">
       <section className="relative overflow-hidden border-b border-forest/10 bg-white">
         <img
-          src="/freedom-and-wealth.png"
-          alt=""
+          src="/freedom-wealth-dad-kids.jpeg"
+          alt="Dad and child looking at a trading chart on a laptop"
           className="absolute inset-0 h-full w-full object-cover object-center"
-          aria-hidden="true"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-white via-white/92 to-white/12" />
         <div className="absolute inset-0 bg-gradient-to-t from-white/78 via-transparent to-white/12" />
@@ -2238,8 +2195,8 @@ export default function FreedomWealth() {
 
             <div className="relative min-h-[340px] overflow-hidden rounded-lg bg-forest p-8 text-sand shadow-editorial">
               <img
-                src="/freedom-and-wealth.png"
-                alt="Family looking toward freedom and wealth"
+                src="/stocks-and-investing-header.png"
+                alt="Laptop showing stock market charts on a coastal table at sunset"
                 className="absolute inset-0 h-full w-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-r from-forest/95 via-forest/70 to-forest/15" />
@@ -2264,28 +2221,24 @@ export default function FreedomWealth() {
       ) : activePillar.id === "bitcoin" ? (
         <BitcoinPillarDetail
           activePillar={activePillar}
-          activeReading={activeReading}
           activeGuide={activeGuide}
           onViewAll={viewAllPillars}
         />
       ) : activePillar.id === "stocks" ? (
         <StocksPillarDetail
           activePillar={activePillar}
-          activeReading={activeReading}
           activeGuide={activeGuide}
           onViewAll={viewAllPillars}
         />
       ) : activePillar.id === "online-income" ? (
         <OnlineIncomePillarDetail
           activePillar={activePillar}
-          activeReading={activeReading}
           activeGuide={activeGuide}
           onViewAll={viewAllPillars}
         />
       ) : activePillar.id === "affiliates" ? (
         <AffiliatesPillarDetail
           activePillar={activePillar}
-          activeReading={activeReading}
           activeGuide={activeGuide}
           onViewAll={viewAllPillars}
         />
@@ -2353,15 +2306,6 @@ export default function FreedomWealth() {
             </div>
           </div>
 
-          <div id="pillar-reading-list" className="mt-10">
-            <div className="mb-6 max-w-3xl">
-              <p className="eyebrow text-manuka">Reading List</p>
-              <h2 className="mt-2 font-display text-3xl font-bold text-ink">
-                Books and resources for {activePillar.shortTitle.toLowerCase()}.
-              </h2>
-            </div>
-            <ReadingCards items={activeReading} />
-          </div>
         </section>
       )}
 
@@ -2375,9 +2319,7 @@ export default function FreedomWealth() {
         />
       )}
 
-      {!activePillar ? (
-        <>
-      <section className="border-y border-forest/10 bg-white py-14">
+      <section id="freedom-tools-platforms" className="scroll-mt-28 border-y border-forest/10 bg-white py-14">
         <div className="container-page">
           <div className="mb-8 text-center">
             <p className="eyebrow text-manuka">Tools & Platforms We Recommend</p>
@@ -2405,98 +2347,143 @@ export default function FreedomWealth() {
         </div>
       </section>
 
-      <section className="container-page py-14">
-        <div className="grid gap-8 lg:grid-cols-[0.54fr_0.46fr]">
-          <div>
-            <p className="eyebrow text-forest">Quick Comparison</p>
-            <h2 className="mt-2 font-display text-3xl font-bold text-ink">Pick the path that suits your capacity.</h2>
-            <div className="mt-6 overflow-hidden rounded-lg border border-forest/10 bg-white shadow-soft">
-              <div className="overflow-x-auto">
-                <table className="w-full min-w-[720px] text-left text-sm">
-                  <thead className="bg-sage text-xs uppercase tracking-wide text-forest">
-                    <tr>
-                      {["Pillar", "Time", "Capital", "Income Potential", "Best For"].map((heading) => (
-                        <th key={heading} className="px-4 py-3 font-extrabold">{heading}</th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-forest/10">
-                    {comparisonRows.map((row) => (
-                      <tr key={row[0]}>
-                        {row.map((cell) => (
-                          <td key={cell} className="px-4 py-4 text-ink/74">{cell}</td>
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
+      <section id="freedom-quick-comparison" className="container-page scroll-mt-28 py-16">
+        <div className="text-center">
+          <p className="eyebrow text-forest">Quick Comparison</p>
+          <h2 className="mx-auto mt-2 max-w-3xl font-display text-3xl font-bold text-ink">
+            Pick the path that suits your capacity.
+          </h2>
+          <p className="mx-auto mt-4 max-w-3xl text-sm font-semibold leading-7 text-ink/62">
+            Each path can support freedom in a different way. Start with the one that matches your time, starting capital, and season of life.
+          </p>
+        </div>
 
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
-            {familyPrinciples.map(({ title, text, icon: Icon }) => (
-              <article key={title} className="rounded-lg border border-forest/10 bg-white p-5 shadow-sm">
-                <Icon className="text-manuka" size={26} />
-                <h3 className="mt-3 font-display text-xl font-bold text-ink">{title}</h3>
-                <p className="mt-2 text-sm leading-6 text-ink/70">{text}</p>
+        <div className="mt-9 grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+          {comparisonRows.map(([pillar, time, capital, potential, bestFor], index) => {
+            const pillarMeta = freedomPillars[index];
+            const Icon = pillarMeta?.icon || Compass;
+
+            return (
+              <article key={pillar} className="flex min-h-[390px] flex-col rounded-lg border border-forest/10 bg-white p-5 shadow-soft">
+                <div className="flex items-start justify-between gap-4">
+                  <span className="grid h-11 w-11 place-items-center rounded-full bg-forest text-sm font-extrabold text-sand">
+                    {pillarMeta?.number || index + 1}
+                  </span>
+                  <Icon className="text-manuka" size={34} strokeWidth={1.35} />
+                </div>
+                <h3 className="mt-5 min-h-[4.6rem] font-display text-2xl font-bold leading-tight text-ink">{pillar}</h3>
+                <div className="mt-5 grid gap-3 text-left">
+                  {[
+                    ["Time", time],
+                    ["Capital", capital],
+                    ["Potential", potential],
+                    ["Best for", bestFor]
+                  ].map(([label, value]) => (
+                    <div key={label} className="rounded-md bg-mist px-4 py-3">
+                      <p className="text-[0.62rem] font-extrabold uppercase tracking-[0.16em] text-forest/70">{label}</p>
+                      <p className="mt-1 text-sm font-semibold leading-5 text-ink/74">{value}</p>
+                    </div>
+                  ))}
+                </div>
               </article>
-            ))}
-          </div>
+            );
+          })}
+        </div>
+
+        <div className="mt-7 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          {familyPrinciples.map(({ title, text, icon: Icon }) => (
+            <article key={title} className="flex min-h-[170px] flex-col rounded-lg border border-forest/10 bg-sage/70 p-5 text-center shadow-sm">
+              <Icon className="mx-auto text-manuka" size={30} strokeWidth={1.45} />
+              <h3 className="mt-4 font-display text-xl font-bold text-ink">{title}</h3>
+              <p className="mt-3 text-sm font-semibold leading-6 text-ink/66">{text}</p>
+            </article>
+          ))}
         </div>
       </section>
 
-      <section className="bg-forest py-14 text-white">
-        <div className="container-page grid gap-6 lg:grid-cols-2">
-          <div>
+      <section id="freedom-compounding-examples" className="scroll-mt-28 bg-forest py-16 text-white">
+        <div className="container-page">
+          <div className="mx-auto max-w-3xl text-center">
             <p className="eyebrow text-manuka">Compounding Examples</p>
-            <h2 className="mt-2 font-display text-3xl font-bold text-sand">Small habits can become serious options.</h2>
-            <p className="mt-4 max-w-xl text-sm leading-7 text-white/72">
-              These examples are illustrative, not promises. Markets vary year to year, but the tables show why consistent contributions can matter.
+            <h2 className="mt-2 font-display text-3xl font-bold text-sand">
+              Small habits can become serious options.
+            </h2>
+            <p className="mx-auto mt-4 max-w-2xl text-sm font-semibold leading-7 text-white/72">
+              These examples are illustrative, not promises. Markets vary year to year, but they show why consistent contributions can matter.
             </p>
           </div>
-          <div className="grid gap-4">
-            <div className="rounded-lg border border-white/10 bg-white/8 p-5">
-              <h3 className="font-display text-xl font-bold text-sand">Stocks example: $100 per week at 8% average return</h3>
-              <div className="mt-4 grid gap-2">
+
+          <div className="mt-9 grid gap-5 lg:grid-cols-2 lg:items-stretch">
+            <article className="flex min-h-[430px] flex-col rounded-lg border border-white/10 bg-white/8 p-5 shadow-editorial sm:p-6">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-manuka">Stocks</p>
+                  <h3 className="mt-2 font-display text-2xl font-bold leading-tight text-sand">
+                    $100 per week at 8% average return
+                  </h3>
+                </div>
+                <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-manuka text-ink">
+                  <TrendingUp size={25} strokeWidth={1.45} />
+                </span>
+              </div>
+              <div className="mt-6 grid gap-3">
                 {stockGrowthRows.map(([time, contributed, value]) => (
-                  <div key={time} className="grid grid-cols-3 rounded-lg bg-white/8 px-4 py-3 text-sm">
-                    <span>{time}</span>
-                    <span>{contributed}</span>
-                    <span className="font-bold text-manuka">{value}</span>
+                  <div key={time} className="grid gap-3 rounded-lg bg-white/8 p-4 sm:grid-cols-3 sm:items-center">
+                    <div>
+                      <p className="text-[0.62rem] font-extrabold uppercase tracking-[0.16em] text-manuka">Time</p>
+                      <p className="mt-1 text-sm font-semibold text-white/84">{time}</p>
+                    </div>
+                    <div>
+                      <p className="text-[0.62rem] font-extrabold uppercase tracking-[0.16em] text-manuka">Contributed</p>
+                      <p className="mt-1 text-sm font-semibold text-white/84">{contributed}</p>
+                    </div>
+                    <div>
+                      <p className="text-[0.62rem] font-extrabold uppercase tracking-[0.16em] text-manuka">Estimate</p>
+                      <p className="mt-1 text-base font-extrabold text-manuka">{value}</p>
+                    </div>
                   </div>
                 ))}
               </div>
-            </div>
-            <div className="rounded-lg border border-white/10 bg-white/8 p-5">
-              <h3 className="font-display text-xl font-bold text-sand">Bitcoin example: weekly contributions</h3>
-              <div className="mt-4 overflow-x-auto">
+            </article>
+
+            <article className="flex min-h-[430px] flex-col rounded-lg border border-white/10 bg-white/8 p-5 shadow-editorial sm:p-6">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-manuka">Bitcoin</p>
+                  <h3 className="mt-2 font-display text-2xl font-bold leading-tight text-sand">
+                    Weekly contribution comparison
+                  </h3>
+                </div>
+                <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-manuka text-ink">
+                  <BitcoinIcon size={25} strokeWidth={1.45} />
+                </span>
+              </div>
+              <div className="mt-6 overflow-x-auto rounded-lg bg-white/8 p-4">
                 <table className="w-full min-w-[520px] text-sm">
                   <thead className="text-left text-manuka">
                     <tr>
                       {["Time", "$50/wk", "$100/wk", "$150/wk"].map((heading) => (
-                        <th key={heading} className="pb-3 font-extrabold">{heading}</th>
+                        <th key={heading} className="pb-4 font-extrabold">{heading}</th>
                       ))}
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-white/10">
                     {bitcoinGrowthRows.map((row) => (
                       <tr key={row[0]}>
-                        {row.map((cell) => (
-                          <td key={cell} className="py-3 text-white/78">{cell}</td>
+                        {row.map((cell, index) => (
+                          <td key={cell} className={`py-4 ${index === 0 ? "font-bold text-white/88" : "text-white/76"}`}>
+                            {cell}
+                          </td>
                         ))}
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
-            </div>
+            </article>
           </div>
         </div>
       </section>
-
-        </>
-      ) : null}
 
       <ScrollingBookReferences />
       <FreedomQuickGuideSection choosePillar={choosePillar} />

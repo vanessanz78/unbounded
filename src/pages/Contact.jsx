@@ -1,5 +1,7 @@
 import { Mail, MessageCircle, Users } from "lucide-react";
 import NewsletterForm from "../components/NewsletterForm.jsx";
+import { discordUrl } from "../data/socialLinks.js";
+import { toolLinks } from "../data/toolLinks.js";
 
 const contactCards = [
   {
@@ -12,16 +14,16 @@ const contactCards = [
   {
     icon: MessageCircle,
     title: "Discord",
-    text: "Community link placeholder",
+    text: "Join our Discord server",
     note: "Join our community and connect.",
-    href: "#"
+    href: discordUrl
   },
   {
     icon: Users,
     title: "Abundant Freedom",
     text: "Newsletter and community hub",
     note: "Updates, resources, and more.",
-    href: "#"
+    href: toolLinks.abundantFreedom
   }
 ];
 
@@ -76,6 +78,8 @@ export default function Contact() {
           <a
             key={title}
             href={href}
+            target={href.startsWith("http") ? "_blank" : undefined}
+            rel={href.startsWith("http") ? "noreferrer" : undefined}
             className="group flex gap-5 rounded-lg border border-forest/10 bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-soft"
           >
             <span className="grid h-16 w-16 shrink-0 place-items-center rounded-full bg-sage text-forest transition group-hover:bg-forest group-hover:text-white">

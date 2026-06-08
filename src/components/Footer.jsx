@@ -1,18 +1,32 @@
 import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import Logo from "./Logo.jsx";
-
-const instagramUrl = "https://www.instagram.com/unborderedfamily/";
-const youtubeUrl = "https://www.youtube.com/";
+import { discordUrl, instagramUrl, youtubeUrl } from "../data/socialLinks.js";
+import { toolLinks } from "../data/toolLinks.js";
 
 const defaultFooterPanel = {
   eyebrow: "Choose Your Door",
   title: "Choose the life you want to build.",
   text: "Explore the five content pillars: Freedom & Wealth, Family & Travel, Conscious Living, Home & Living, and AI Tools.",
-  image: "/wilson-whanau-hero.png",
+  image: "/tropical-garden-path.png",
   href: "#/",
   cta: "Choose Your Door"
 };
+
+const footerScenery = {
+  default: { image: "/tropical-garden-path.png", position: "center" },
+  openPath: { image: "/nz-header-pano.jpg", position: "center" },
+  coastal: { image: "/pataua-north-road-aerial.png", position: "center" },
+  global: { image: "/panama-city-skyline.jpg", position: "center" }
+};
+
+function getFooterScenery(path) {
+  if (path === "/journey" || path.startsWith("/home-lifestyle")) return footerScenery.coastal;
+  if (path === "/our-story") return footerScenery.global;
+  if (path === "/using-ai-tools" || path.startsWith("/family-travel")) return footerScenery.openPath;
+  if (path === "/building-public" || path.startsWith("/using-ai-tools")) return footerScenery.global;
+  return footerScenery.default;
+}
 
 const footerPanels = {
   "/": defaultFooterPanel,
@@ -33,12 +47,12 @@ const footerPanels = {
     cta: "Browse Books"
   },
   "/our-story": {
-    eyebrow: "Our Story",
-    title: "The story behind the journey.",
-    text: "We are building this life as a family, one decision, project, adventure, and honest lesson at a time.",
-    image: "/wilson-whanau.png",
-    href: "#/journey",
-    cta: "Follow Our Journey"
+    eyebrow: "AI Tools",
+    title: "Create, automate, and build freedom.",
+    text: "Our favorite tools help us turn ideas into practical projects, income streams, and systems that support family life.",
+    image: "/building-public-page-reference.png",
+    href: "#/using-ai-tools?section=ai-tools&anchor=ai-tools-we-use",
+    cta: "Explore AI Tools"
   },
   "/journey": {
     eyebrow: "Follow Our Journey",
@@ -49,12 +63,12 @@ const footerPanels = {
     cta: "Read Our Story"
   },
   "/family-travel": {
-    eyebrow: "Family & Travel",
-    title: "Design a life without borders.",
-    text: "Travel smarter, worldschool gently, and choose places that support more time, more connection, and more freedom.",
-    image: "/family-and-travel.png",
-    href: "#/family-travel",
-    cta: "Explore Family Travel"
+    eyebrow: "Home & Living",
+    title: "Create a home that supports freedom.",
+    text: "Our home projects, food security, land, and lifestyle choices help us live with more purpose and less noise.",
+    image: "/home-family-portrait.png",
+    href: "#/home-lifestyle?section=sovereign-lifestyle",
+    cta: "Explore Home Living"
   },
   "/family-travel?section=why-travel": {
     eyebrow: "Why Travel?",
@@ -133,7 +147,7 @@ const footerPanels = {
     title: "Restore balance, body, mind, and soul.",
     text: "Healing helps us soften old patterns, support the whole person, and reconnect with our inner knowing.",
     image: "/spiritual-healing-hero.png",
-    href: "#/spiritual-conscious?section=healing",
+    href: "#/spiritual-conscious?section=healing&anchor=spiritual-detail",
     cta: "Explore Healing"
   },
   "/spiritual-conscious?section=sovereignty": {
@@ -165,7 +179,7 @@ const footerPanels = {
     title: "Return to the wisdom within.",
     text: "Healing, reflection, and guided support help us soften old patterns and reconnect with what matters.",
     image: "/spiritual-healing-hero.png",
-    href: "#/spiritual-conscious?section=healing",
+    href: "#/spiritual-conscious?section=healing&anchor=spiritual-detail",
     cta: "Explore Healing"
   },
   "/spiritual-conscious/sovereignty": {
@@ -177,12 +191,12 @@ const footerPanels = {
     cta: "Explore Sovereignty"
   },
   "/home-lifestyle": {
-    eyebrow: "Home & Living",
-    title: "Create a home that supports freedom.",
-    text: "Our home projects, food security, land, and lifestyle choices help us live with more purpose and less noise.",
-    image: "/home-family-portrait.png",
-    href: "#/home-lifestyle",
-    cta: "Explore Home Living"
+    eyebrow: "Family & Travel",
+    title: "Design a life without borders.",
+    text: "Travel smarter, worldschool gently, and choose places that support more time, more connection, and more freedom.",
+    image: "/family-and-travel.png",
+    href: "#/family-travel?section=why-travel",
+    cta: "Explore Family Travel"
   },
   "/home-lifestyle?section=sovereign-lifestyle": {
     eyebrow: "Sovereign Lifestyle",
@@ -229,7 +243,7 @@ const footerPanels = {
     title: "Use technology to create freedom.",
     text: "We use AI to build websites, systems, guides, tools, and content that give our family more time and reach.",
     image: "/building-in-public.png",
-    href: "#/using-ai-tools",
+    href: "#/using-ai-tools?section=ai-tools&anchor=ai-tools-we-use",
     cta: "Explore AI Tools"
   },
   "/using-ai-tools?section=why-ai": {
@@ -245,7 +259,7 @@ const footerPanels = {
     title: "Choose the right tools for the job.",
     text: "The best tools help us create, automate, prototype, document, and scale without losing our family-first values.",
     image: "/ai-tools-guide.png",
-    href: "#/using-ai-tools?section=ai-tools",
+    href: "#/using-ai-tools?section=ai-tools&anchor=ai-tools-we-use",
     cta: "View AI Tools"
   },
   "/using-ai-tools?section=workflow": {
@@ -273,12 +287,12 @@ const footerPanels = {
     cta: "Explore Scale"
   },
   "/using-ai-tools": {
-    eyebrow: "AI Tools",
-    title: "Create, automate, and build freedom.",
-    text: "Our favorite tools help us turn ideas into practical projects, income streams, and systems that support family life.",
-    image: "/building-public-page-reference.png",
-    href: "#/using-ai-tools",
-    cta: "Explore AI Tools"
+    eyebrow: "Our Story",
+    title: "The story behind the journey.",
+    text: "We are building this life as a family, one decision, project, adventure, and honest lesson at a time.",
+    image: "/wilson-whanau.png",
+    href: "#/journey",
+    cta: "Follow Our Journey"
   },
   "/blogs": {
     eyebrow: "Stories & Notes",
@@ -297,6 +311,8 @@ const footerPanels = {
     cta: "Contact Us"
   }
 };
+
+const hideFooterPanelPaths = new Set(["/freedom-wealth"]);
 
 function getFooterPath() {
   if (typeof window === "undefined") {
@@ -323,7 +339,23 @@ function useFooterPanel() {
     return () => window.removeEventListener("hashchange", updatePath);
   }, []);
 
-  return footerPanels[path] || defaultFooterPanel;
+  if (hideFooterPanelPaths.has(path)) {
+    return null;
+  }
+
+  const panel = footerPanels[path] || defaultFooterPanel;
+  const scenery = getFooterScenery(path);
+  return { ...panel, image: scenery.image, imagePosition: scenery.position };
+}
+
+function scrollToFooterTarget(href) {
+  if (!href?.startsWith("#/") || !href.includes("anchor=")) return;
+  const query = href.split("?")[1]?.split("#")[0] || "";
+  const targetId = new URLSearchParams(query).get("anchor");
+  if (!targetId) return;
+  window.setTimeout(() => {
+    document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, 90);
 }
 
 const footerColumns = [
@@ -339,16 +371,16 @@ const footerColumns = [
     title: "Content Pillars",
     links: [
       ["Freedom & Wealth", "#/freedom-wealth"],
-      ["Family & Travel", "#/family-travel"],
+      ["Family & Travel", "#/family-travel?section=why-travel"],
       ["Conscious Living", "#/spiritual-conscious"],
-      ["Home & Living", "#/home-lifestyle"],
-      ["AI Tools", "#/using-ai-tools"]
+      ["Home & Living", "#/home-lifestyle?section=sovereign-lifestyle"],
+      ["AI Tools", "#/using-ai-tools?section=ai-tools&anchor=ai-tools-we-use"]
     ]
   },
   {
     title: "Learn",
     links: [
-      ["Online Trading Course", "https://abundantfreedom.online/"],
+      ["Online Trading Course", toolLinks.abundantFreedom],
       ["Guides Library", "#/guides-library"],
       ["Recommended Reading", "#/recommended-reading"]
     ]
@@ -357,20 +389,19 @@ const footerColumns = [
     title: "Connect",
     links: [
       ["Contact", "#/contact"],
+      ["Discord", discordUrl],
       ["Instagram", instagramUrl],
       ["YouTube", youtubeUrl]
     ]
   },
   {
-    title: "Popular Topics",
+    title: "Our Projects",
     links: [
-      ["Online Trading", "#/freedom-wealth?section=online-trading"],
-      ["Bitcoin & Sovereignty", "#/freedom-wealth?section=bitcoin"],
-      ["Worldschooling", "#/family-travel?section=worldschooling"],
-      ["Relocation", "#/family-travel?section=relocation"],
-      ["Food Security", "#/home-lifestyle?section=food-security-self-sufficiency"],
-      ["QHHT", "#/spiritual-conscious/qhht"],
-      ["Rongoā", "#/spiritual-conscious?section=healing"]
+      ["Deloraine Cattery", toolLinks.deloraineCattery],
+      ["Deloraine Cottage", toolLinks.deloraineCottage],
+      ["QHHT", toolLinks.guidedHealing],
+      ["Online Trading", toolLinks.abundantFreedom],
+      ["Stay Direct", toolLinks.stayDirect]
     ]
   }
 ];
@@ -380,45 +411,49 @@ export default function Footer() {
 
   return (
     <>
-      <section className="container-page pb-16 pt-3">
-        <div className="relative overflow-hidden rounded-lg border border-manuka/25 bg-forest text-sand shadow-editorial">
-          <div className="absolute inset-0">
-            <img
-              src={footerPanel.image}
-              alt=""
-              className="h-full w-full object-cover"
-              loading="lazy"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-ink/95 via-forest/78 to-ink/20" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(222,174,77,0.2),transparent_32%)]" />
-          </div>
-
-          <div className="relative grid min-h-[238px] gap-0 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-stretch">
-            <div className="flex max-w-3xl flex-col justify-center px-6 py-7 sm:px-8 lg:px-10">
-              <p className="eyebrow text-manuka">{footerPanel.eyebrow}</p>
-              <h2 className="mt-2 max-w-2xl font-display text-2xl font-bold leading-tight text-sand sm:text-3xl">
-                {footerPanel.title}
-              </h2>
-              <p className="mt-3 max-w-3xl text-sm font-semibold leading-7 text-sand/82 sm:text-base">
-                {footerPanel.text}
-              </p>
+      {footerPanel ? (
+        <section className="container-page pb-16 pt-3">
+          <div className="relative overflow-hidden rounded-lg border border-manuka/25 bg-forest text-sand shadow-editorial">
+            <div className="absolute inset-0">
+              <img
+                src={footerPanel.image}
+                alt=""
+                className="h-full w-full object-cover"
+                style={{ objectPosition: footerPanel.imagePosition || "center" }}
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-ink/95 via-forest/78 to-ink/20" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(222,174,77,0.2),transparent_32%)]" />
             </div>
 
-            <div className="flex flex-col items-center justify-center gap-4 border-t border-white/10 px-6 pb-7 sm:px-8 lg:border-l lg:border-t-0 lg:py-7">
-              <a
-                href={footerPanel.href}
-                className="inline-flex w-full items-center justify-center gap-3 rounded-lg bg-manuka px-6 py-4 text-center text-sm font-extrabold uppercase tracking-wide text-ink shadow-sm transition hover:bg-sand"
-              >
-                {footerPanel.cta}
-                <ArrowRight size={19} />
-              </a>
-              <p className="text-center text-xs font-semibold uppercase tracking-[0.14em] text-sand/68">
-                Create freedom. Live fully.
-              </p>
+            <div className="relative grid min-h-[238px] gap-0 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-stretch">
+              <div className="flex max-w-3xl flex-col justify-center px-6 py-7 sm:px-8 lg:px-10">
+                <p className="eyebrow text-manuka">{footerPanel.eyebrow}</p>
+                <h2 className="mt-2 max-w-2xl font-display text-2xl font-bold leading-tight text-sand sm:text-3xl">
+                  {footerPanel.title}
+                </h2>
+                <p className="mt-3 max-w-3xl text-sm font-semibold leading-7 text-sand/82 sm:text-base">
+                  {footerPanel.text}
+                </p>
+              </div>
+
+              <div className="flex flex-col items-center justify-center gap-4 border-t border-white/10 px-6 pb-7 sm:px-8 lg:border-l lg:border-t-0 lg:py-7">
+                <a
+                  href={footerPanel.href}
+                  onClick={() => scrollToFooterTarget(footerPanel.href)}
+                  className="inline-flex w-full items-center justify-center gap-3 rounded-lg bg-manuka px-6 py-4 text-center text-sm font-extrabold uppercase tracking-wide text-ink shadow-sm transition hover:bg-sand"
+                >
+                  {footerPanel.cta}
+                  <ArrowRight size={19} />
+                </a>
+                <p className="text-center text-xs font-semibold uppercase tracking-[0.14em] text-sand/68">
+                  Create freedom. Live fully.
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      ) : null}
 
       <footer className="bg-forest text-white">
         <div className="container-page grid gap-4 py-4 sm:grid-cols-2 lg:grid-cols-5">

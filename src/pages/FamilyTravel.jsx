@@ -28,10 +28,16 @@ import {
   Timer,
   Users,
   WalletCards,
+  Wifi,
   X
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import PillarDetailNavigation from "../components/PillarDetailNavigation.jsx";
+import { getAmazonBookLink } from "../data/amazonBookLinks.js";
+import { discordUrl } from "../data/socialLinks.js";
+import { toolLinks } from "../data/toolLinks.js";
+
+const starlinkReferralUrl = toolLinks.starlink;
 
 const pillars = [
   {
@@ -81,11 +87,12 @@ const practicalGuides = [
 ];
 
 const travelFreedomTools = [
-  ["Home Exchange", "Stay for free anywhere in the world.", Home],
-  ["Karma Group", "Resorts, villas, cruises & campervans at members' rates.", Sparkles],
-  ["Airpoints Strategy", "Turn everyday spending into free flights.", Plane],
-  ["Smart Money", "Credit cards for points. Revolving facility to save on interest.", CreditCard],
-  ["Travel Planning", "Apps, tools & systems to plan with ease.", Globe2]
+  ["Home Exchange", "Stay for free anywhere in the world.", Home, toolLinks.homeExchange],
+  ["Karma Group", "Resorts, villas, cruises & campervans at members' rates.", Sparkles, toolLinks.karmaGroup],
+  ["Airpoints Strategy", "Turn everyday spending into free flights.", Plane, toolLinks.airpoints],
+  ["Smart Money", "Credit cards for points. Revolving facility to save on interest.", CreditCard, toolLinks.wise],
+  ["Travel Planning", "Apps, tools & systems to plan with ease.", Globe2, toolLinks.airbnb],
+  ["Starlink Internet", "Reliable internet for remote work, travel bases, and off-grid family adventures.", Wifi, starlinkReferralUrl]
 ];
 
 const familyTravelGuides = [
@@ -192,7 +199,8 @@ const accommodationStrategies = [
       "Annual membership with global access"
     ],
     image: "/bali-panama-beyond-rice-fields.png",
-    icon: Home
+    icon: Home,
+    links: [["HomeExchange", toolLinks.homeExchange]]
   },
   {
     title: "Karma Group",
@@ -204,7 +212,8 @@ const accommodationStrategies = [
       "Cruises, hotels, villas & more"
     ],
     image: "/travel-smarter-expanded-guide.png",
-    icon: Sparkles
+    icon: Sparkles,
+    links: [["Karma Group", toolLinks.karmaGroup]]
   },
   {
     title: "Airbnb & Booking.com",
@@ -216,7 +225,11 @@ const accommodationStrategies = [
       "Use when other options are not available"
     ],
     image: "/home-deloraine-cottage.png",
-    icon: Compass
+    icon: Compass,
+    links: [
+      ["Airbnb", toolLinks.airbnb],
+      ["Booking.com", toolLinks.booking]
+    ]
   }
 ];
 
@@ -528,12 +541,12 @@ const beginCards = [
     icon: Globe2
   },
   {
-    title: "Design Your Lifestyle",
+    title: "Global Lifestyle",
     text: "Create a life that supports your family's freedom.",
-    action: "Lifestyle Design",
-    href: "#/family-travel?section=global-lifestyle",
-    image: "/pacific-family-route.png",
-    icon: Heart
+    action: "Quick Reference Guide",
+    guideId: "global-lifestyle-guide",
+    image: "/global-lifestyle-guide.png",
+    icon: Compass
   }
 ];
 
@@ -553,6 +566,11 @@ function getTargetSection() {
   const hash = window.location.hash.replace("#", "");
   const query = hash.split("?")[1] || "";
   return new URLSearchParams(query).get("section") || "";
+}
+
+function getCurrentHashPath() {
+  const hash = window.location.hash.replace("#", "") || "/";
+  return hash.split(/[?#]/)[0] || "/";
 }
 
 function getInitialPillar() {
@@ -637,13 +655,85 @@ function FamilyTravelBookshelf() {
           className="flex snap-x gap-6 overflow-x-auto px-0 pb-5 md:px-12 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-forest/20 [&::-webkit-scrollbar-track]:bg-transparent"
         >
           {familyTravelBooks.map(({ title, author, cover }) => (
-            <article key={title} className="w-36 shrink-0 snap-start text-center">
+            <a
+              key={title}
+              href={getAmazonBookLink(title, author)}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`Open ${title} on Amazon`}
+              className="w-36 shrink-0 snap-start text-center no-underline transition hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-manuka"
+            >
               <TravelBookCover title={title} cover={cover} />
               <h3 className="mx-auto mt-4 max-w-36 text-sm font-extrabold leading-5 text-ink">{title}</h3>
               <p className="mt-2 text-xs leading-4 text-ink/58">{author}</p>
-            </article>
+            </a>
           ))}
         </div>
+      </div>
+    </section>
+  );
+}
+
+function TravelFreedomToolsSection() {
+  return (
+    <section id="travel-freedom-tools" className="container-page scroll-mt-28 pb-16">
+      <div className="rounded-lg border border-forest/10 bg-white p-5 shadow-soft sm:p-7">
+        <div className="text-center">
+          <p className="eyebrow text-manuka">Our Top Tools for Freedom & Travel</p>
+        </div>
+        <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+          {travelFreedomTools.map(([title, text, Icon, href]) => {
+            const cardClass =
+              "group flex min-h-[300px] flex-col items-center rounded-lg border border-forest/10 bg-mist px-5 py-6 text-center transition hover:-translate-y-1 hover:border-manuka/50 hover:bg-sage/70 hover:shadow-soft focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-manuka";
+            const content = (
+              <>
+                <div className="grid h-20 w-20 shrink-0 place-items-center rounded-full bg-white text-forest shadow-soft">
+                  <Icon size={44} strokeWidth={1.35} />
+                </div>
+                <h3 className="mt-5 min-h-[3.2rem] font-display text-xl font-bold leading-tight text-ink">{title}</h3>
+                <p className="mt-3 text-sm font-semibold leading-6 text-ink/66">{text}</p>
+                {href && (
+                  <span className="mt-auto inline-flex items-center justify-center gap-2 pt-6 text-xs font-extrabold uppercase tracking-wide text-manuka">
+                    Use Referral Link
+                    <ArrowRight size={14} />
+                  </span>
+                )}
+              </>
+            );
+
+            return href ? (
+              <a key={title} href={href} target="_blank" rel="noreferrer" className={cardClass}>
+                {content}
+              </a>
+            ) : (
+              <article key={title} className={cardClass}>
+                {content}
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function PracticalGuidesSection() {
+  return (
+    <section className="container-page pb-12">
+      <div className="text-center">
+        <p className="eyebrow text-manuka">What You’ll Find Here</p>
+        <h2 className="mx-auto mt-2 max-w-3xl font-display text-3xl font-bold text-ink">
+          Practical Guides. Real Strategies. Family Focused.
+        </h2>
+      </div>
+      <div className="mt-8 grid gap-5 md:grid-cols-3 xl:grid-cols-6">
+        {practicalGuides.map(([title, text, Icon]) => (
+          <article key={title} className="flex min-h-[190px] flex-col items-center border-forest/10 px-4 text-center xl:border-r xl:last:border-r-0">
+            <Icon className="text-forest" size={38} strokeWidth={1.45} />
+            <h3 className="mt-4 text-sm font-extrabold text-ink">{title}</h3>
+            <p className="mt-3 text-xs leading-5 text-ink/64">{text}</p>
+          </article>
+        ))}
       </div>
     </section>
   );
@@ -672,10 +762,11 @@ export default function FamilyTravel() {
 
   useEffect(() => {
     const syncTarget = () => {
+      if (getCurrentHashPath() !== "/family-travel") return;
       const target = getTargetSection();
-      if (!pillars.some((pillar) => pillar.id === target)) return;
-      setActiveId(target);
-      window.setTimeout(() => scrollTo(target), 90);
+      const nextTarget = pillars.some((pillar) => pillar.id === target) ? target : "why-travel";
+      setActiveId(nextTarget);
+      window.setTimeout(() => scrollTo(nextTarget), 90);
     };
 
     syncTarget();
@@ -685,34 +776,41 @@ export default function FamilyTravel() {
 
   return (
     <main className="overflow-hidden bg-mist">
-      <section className="relative overflow-hidden bg-white">
-        <div className="absolute inset-y-0 right-0 hidden w-[58%] bg-cover bg-center lg:block" style={{ backgroundImage: "url('/family-and-travel.png')" }} />
-        <div className="absolute inset-0 bg-gradient-to-r from-mist via-mist/90 to-mist/10" />
-        <div className="container-page relative grid min-h-[560px] items-center py-16">
-          <div className="max-w-xl">
+      <section className="relative overflow-hidden bg-ink text-white">
+        <div className="absolute inset-0">
+          <img
+            src="/family-and-travel.png"
+            alt="The Unbordered Family walking through a tropical landscape"
+            className="h-full w-full object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/78 to-ink/18" />
+          <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-ink/14" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_9%_88%,rgba(3,23,22,.76),transparent_30rem)]" />
+        </div>
+        <div className="container-page relative grid min-h-[620px] items-center py-16 sm:min-h-[680px]">
+          <div className="max-w-2xl" style={{ textShadow: "0 2px 28px rgba(3, 23, 22, 0.48)" }}>
             <p className="eyebrow text-manuka">Family & Travel</p>
-            <h1 className="mt-4 font-display text-5xl font-bold leading-[0.98] text-ink sm:text-6xl">
+            <h1 className="mt-4 font-display text-5xl font-bold leading-[0.98] text-sand sm:text-6xl">
               Design a Life Without Borders.
             </h1>
             <p className="mt-4 font-display text-3xl font-semibold italic leading-tight text-manuka">
               Family first. Freedom focused. Connected everywhere.
             </p>
-            <p className="mt-6 text-base leading-7 text-ink/72">
+            <p className="mt-6 max-w-xl text-base leading-7 text-sand/84">
               We explore worldschooling, relocation, slow travel, and global living as tools to create richer family experiences and more intentional lives.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <button type="button" onClick={() => scrollTo("family-pillars")} className="btn-primary">
+              <button type="button" onClick={() => scrollTo("family-pillars")} className="btn-primary bg-manuka text-ink hover:bg-sand">
                 Explore the 5 Pillars
                 <ArrowRight size={16} />
               </button>
-              <button type="button" onClick={() => scrollTo("start-family-journey")} className="btn-light">
+              <button type="button" onClick={() => scrollTo("start-family-journey")} className="btn-secondary border-manuka/75 text-sand hover:bg-manuka hover:text-ink">
                 Start Your Journey
                 <Leaf size={16} />
               </button>
             </div>
           </div>
         </div>
-        <div className="absolute bottom-0 left-0 right-0 h-12 rounded-t-[55%] border-t border-manuka/45 bg-mist" />
       </section>
 
       <section id="family-pillars" className="container-page scroll-mt-28 py-12">
@@ -743,43 +841,6 @@ export default function FamilyTravel() {
               </button>
             );
           })}
-        </div>
-      </section>
-
-      <section className="container-page pb-12">
-        <div className="text-center">
-          <p className="eyebrow text-manuka">What You’ll Find Here</p>
-          <h2 className="mx-auto mt-2 max-w-3xl font-display text-3xl font-bold text-ink">
-            Practical Guides. Real Strategies. Family Focused.
-          </h2>
-        </div>
-        <div className="mt-8 grid gap-5 md:grid-cols-3 xl:grid-cols-6">
-          {practicalGuides.map(([title, text, Icon]) => (
-            <article key={title} className="flex min-h-[190px] flex-col items-center border-forest/10 px-4 text-center xl:border-r xl:last:border-r-0">
-              <Icon className="text-forest" size={38} strokeWidth={1.45} />
-              <h3 className="mt-4 text-sm font-extrabold text-ink">{title}</h3>
-              <p className="mt-3 text-xs leading-5 text-ink/64">{text}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="container-page pb-12">
-        <div className="rounded-lg border border-forest/10 bg-white p-5 shadow-soft sm:p-6">
-          <div className="text-center">
-            <p className="eyebrow text-manuka">Our Top Tools for Freedom & Travel</p>
-          </div>
-          <div className="mt-6 grid overflow-hidden rounded-lg border border-forest/10 bg-white md:grid-cols-5">
-            {travelFreedomTools.map(([title, text, Icon]) => (
-              <article key={title} className="grid min-h-[150px] grid-cols-[0.32fr_0.68fr] items-center gap-4 border-b border-forest/10 p-5 last:border-b-0 md:border-b-0 md:border-r md:last:border-r-0">
-                <Icon className="mx-auto text-forest" size={52} strokeWidth={1.35} />
-                <div>
-                  <h3 className="font-display text-xl font-bold leading-tight text-ink">{title}</h3>
-                  <p className="mt-3 text-sm font-semibold leading-6 text-ink/66">{text}</p>
-                </div>
-              </article>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -901,7 +962,7 @@ export default function FamilyTravel() {
               1. Accommodation: Stay More, Pay Less
             </h3>
             <div className="mt-5 grid gap-5 lg:grid-cols-3">
-              {accommodationStrategies.map(({ title, text, points, image, icon: Icon }) => (
+              {accommodationStrategies.map(({ title, text, points, image, icon: Icon, links }) => (
                 <article key={title} className="flex min-h-[460px] flex-col rounded-lg border border-forest/10 bg-white p-5 shadow-sm">
                   <div className="flex items-start gap-4">
                     <span className="grid h-16 w-16 shrink-0 place-items-center rounded-full bg-forest text-sand shadow-soft">
@@ -923,6 +984,16 @@ export default function FamilyTravel() {
                   <div className="mt-auto h-36 overflow-hidden rounded-lg bg-sage">
                     <img src={image} alt="" className="h-full w-full object-cover object-center" />
                   </div>
+                  {links?.length > 0 && (
+                    <div className="card-action-row mt-4 justify-center">
+                      {links.map(([label, href]) => (
+                        <a key={label} href={href} target="_blank" rel="noreferrer" className="btn-light px-4 py-2 text-xs">
+                          {label}
+                          <ArrowRight size={14} />
+                        </a>
+                      ))}
+                    </div>
+                  )}
                 </article>
               ))}
             </div>
@@ -957,6 +1028,16 @@ export default function FamilyTravel() {
                   </li>
                 ))}
               </ul>
+              <div className="card-action-row mt-5 justify-start">
+                <a href={toolLinks.americanExpressAirpoints} target="_blank" rel="noreferrer" className="btn-light px-4 py-2 text-xs">
+                  AMEX Airpoints
+                  <ArrowRight size={14} />
+                </a>
+                <a href={toolLinks.anzAirpoints} target="_blank" rel="noreferrer" className="btn-light px-4 py-2 text-xs">
+                  ANZ Airpoints
+                  <ArrowRight size={14} />
+                </a>
+              </div>
               <div className="mt-auto rounded-lg bg-mist p-5">
                 <p className="text-sm font-extrabold uppercase tracking-wide text-ink">How We Do It</p>
                 <div className="mt-4 grid gap-3 sm:grid-cols-4">
@@ -995,6 +1076,16 @@ export default function FamilyTravel() {
                     </li>
                   ))}
                 </ul>
+                <div className="card-action-row mt-5 justify-start">
+                  <a href={toolLinks.wise} target="_blank" rel="noreferrer" className="btn-light px-4 py-2 text-xs">
+                    Wise
+                    <ArrowRight size={14} />
+                  </a>
+                  <a href={toolLinks.revolut} target="_blank" rel="noreferrer" className="btn-light px-4 py-2 text-xs">
+                    Revolut
+                    <ArrowRight size={14} />
+                  </a>
+                </div>
               </div>
               <div className="flex flex-col gap-4">
                 <div className="flex flex-1 flex-col items-center justify-center rounded-lg bg-mist p-5 text-center">
@@ -1286,7 +1377,7 @@ export default function FamilyTravel() {
                 </ul>
                 {action && (
                   <div className="card-action-row mt-auto">
-                    <a href="#/contact" className="btn-primary px-4 py-2 text-xs">
+                    <a href={discordUrl} target="_blank" rel="noreferrer" className="btn-primary px-4 py-2 text-xs">
                       {action}
                       <ArrowRight size={14} />
                     </a>
@@ -1417,6 +1508,8 @@ export default function FamilyTravel() {
         />
       )}
 
+      <PracticalGuidesSection />
+
       <section className="container-page pb-14">
         <div className="text-center">
           <p className="eyebrow text-manuka">Bali & Panama Planning Snapshot</p>
@@ -1465,45 +1558,7 @@ export default function FamilyTravel() {
 
       <FamilyTravelBookshelf />
 
-      <section id="family-travel-guides" className="container-page scroll-mt-28 pb-16">
-        <div className="text-center">
-          <p className="eyebrow text-manuka">Practical Guides & Resources for Families</p>
-          <h2 className="mx-auto mt-2 max-w-4xl font-display text-4xl font-bold leading-tight text-ink">
-            Choose the chapter that matches your next family decision.
-          </h2>
-        </div>
-        <div className="mt-9 grid gap-6 lg:grid-cols-3">
-          {familyTravelGuides.map(({ id, title, text, tags, image, icon: Icon }) => (
-            <article key={id} className="flex min-h-[560px] flex-col overflow-hidden rounded-lg border border-forest/10 bg-white shadow-soft">
-              <div className="relative h-56 overflow-hidden bg-sage">
-                <img src={image} alt={`${title} quick reference guide`} className="h-full w-full object-cover object-top" />
-                <span className="absolute left-6 top-6 grid h-20 w-20 place-items-center rounded-full border-4 border-white bg-forest text-sand shadow-soft">
-                  <Icon size={36} strokeWidth={1.45} />
-                </span>
-              </div>
-              <div className="flex flex-1 flex-col p-7">
-                <h3 className="font-display text-3xl font-bold text-ink">{title}</h3>
-                <p className="mt-5 text-base font-semibold leading-8 text-ink/62">{text}</p>
-                <div className="mt-6 flex flex-wrap gap-3">
-                  {tags.map((tag) => (
-                    <span key={tag} className="rounded-full bg-sage px-4 py-2 text-xs font-extrabold text-forest">{tag}</span>
-                  ))}
-                </div>
-                <div className="card-action-row mt-auto pt-7">
-                  <button type="button" onClick={() => setActiveGuideId(id)} className="btn-light px-5 py-3">
-                    View Guide
-                    <ArrowRight size={16} />
-                  </button>
-                  <a href={image} download className="btn-primary px-5 py-3">
-                    PDF
-                    <Download size={16} />
-                  </a>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
+      <TravelFreedomToolsSection />
 
       <section id="start-family-journey" className="container-page scroll-mt-28 pb-16">
         <div className="text-center">
@@ -1513,7 +1568,7 @@ export default function FamilyTravel() {
           </h2>
         </div>
         <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-5">
-          {beginCards.map(({ title, text, action, href, image, icon: Icon }) => (
+          {beginCards.map(({ title, text, action, href, guideId, image, icon: Icon }) => (
             <article key={title} className="flex min-h-[360px] flex-col overflow-hidden rounded-lg border border-forest/10 bg-white shadow-soft">
               <div className="relative h-36 bg-cover bg-center" style={{ backgroundImage: `url('${image}')` }}>
                 <div className="absolute inset-0 bg-gradient-to-t from-ink/42 to-transparent" />
@@ -1525,10 +1580,17 @@ export default function FamilyTravel() {
                 <h3 className="mt-3 font-display text-xl font-bold text-ink">{title}</h3>
                 <p className="mt-3 text-sm leading-6 text-ink/66">{text}</p>
                 <div className="card-action-row mt-auto">
-                  <a href={href} className="btn-light px-4 py-2 text-xs">
-                    {action}
-                    <ArrowRight size={14} />
-                  </a>
+                  {guideId ? (
+                    <button type="button" onClick={() => setActiveGuideId(guideId)} className="btn-light px-4 py-2 text-xs">
+                      {action}
+                      <ArrowRight size={14} />
+                    </button>
+                  ) : (
+                    <a href={href} className="btn-light px-4 py-2 text-xs">
+                      {action}
+                      <ArrowRight size={14} />
+                    </a>
+                  )}
                 </div>
               </div>
             </article>
